@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning Example</title>
+</head>
+<body>
+
+    <h1>First Page</h1>
+    <p>Machine Learning Class</p>
+    
+    <h2>Loan Approval Prediction (ML Use Case)</h2>
+
+    <label>Age:</label>
+    <input type="number" id="age"><br><br>
+
+    <label>Monthly Income ($):</label>
+    <input type="number" id="income"><br><br>
+
+    <button onclick="predict()">Predict</button>
+
+    <h3 id="result"></h3>
+
+    <script>
+        function predict() {
+            let age = document.getElementById("age").value;
+            let income = document.getElementById("income").value;
+
+            // Simulación de modelo ML simple
+            if (age > 21 && income > 2000) {
+                document.getElementById("result").innerHTML = 
+                    "Prediction: Loan Approved ✅";
+            } else {
+                document.getElementById("result").innerHTML = 
+                    "Prediction: Loan Rejected ❌";
+            }
+        }
+    </script>
+
+</body>
+</html>
