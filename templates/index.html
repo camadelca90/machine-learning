@@ -1,42 +1,163 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Machine Learning Example</title>
+    <title>Machine Learning Case</title>
+    <!-- Enlace al CSS de Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Estilos personalizados -->
+    <style>
+        /* Estilos generales del body */
+        body {
+            font-family: Arial, sans-serif; /* Tipo de fuente */
+            background-color: #f8f9fa; /* Color de fondo gris claro */
+            color: #343a40; /* Color del texto gris oscuro */
+        }
+        /* Estilos del encabezado */
+        header {
+            background-color: #5085C1; /* Color de fondo azul */
+            color: rgb(10, 10, 10); /* Color del texto negro */
+            text-align: center; /* Alineación del texto al centro */
+            padding: 4rem 0; /* Espaciado interno arriba y abajo */
+            margin-bottom: 2rem; /* Margen inferior */
+        }
+        /* Estilos de las secciones */
+        section {
+            padding: 2rem; /* Espaciado interno */
+            margin-bottom: 2rem; /* Margen inferior */
+            background-color: #fffcfc; /* Color de fondo blanco */
+            border-radius: 0.5rem; /* Bordes redondeados */
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Sombra suave */
+        }
+        /* Estilos de los encabezados h1 y h2 */
+        h1, h2 {
+            color: #02060a; /* Color del texto negro */
+        }
+        /* Estilos de las listas ul */
+        ul {
+            list-style-type: square; /* Tipo de viñeta cuadrada */
+        }
+        /* Estilos de las imágenes */
+        img {
+            max-width: 100%; /* Ancho máximo del 100% del contenedor */
+            height: auto; /* Altura automática para mantener la proporción */
+            display: block; /* Mostrar como bloque para aplicar márgenes */
+            margin: 1rem auto; /* Márgenes arriba y abajo, centrado horizontalmente */
+            border-radius: 0.5rem; /* Bordes redondeados */
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Sombra suave */
+        }
+        /* Estilos del pie de página */
+        footer {
+            text-align: center; /* Alineación del texto al centro */
+            padding: 1rem 0; /* Espaciado interno arriba y abajo */
+            background-color: #5085C1; /* Color de fondo azul */
+            color: white; /* Color del texto blanco */
+            margin-top: 2rem; /* Margen superior */
+        }
+    </style>
 </head>
 <body>
-
-    <h1>First Page</h1>
-    <p>Machine Learning Class</p>
+    <!-- Encabezado de la página -->
+    <header class="container-fluid">
+        <h1>MACHINE LEARNING CASE STUDY EMAIL FILTERING</h1>
     
-    <h2>Loan Approval Prediction (ML Use Case)</h2>
+    </header>
 
-    <label>Age:</label>
-    <input type="number" id="age"><br><br>
+    <!-- Contenido principal -->
+    <div class="container">
+        <!-- Sección: ¿Qué es el filtrado de correo electrónico con machine learning? -->
+        <section id="relationship">
+            <h2>¿What is machine learning email filtering?</h2>
+            <p>It is a system that uses machine learning algorithms to classify emails into predefined categories (such as spam, primary, social, promotional) or detect unwanted content, without the need for manually programmed rules.</p>
+        </section>
 
-    <label>Monthly Income ($):</label>
-    <input type="number" id="income"><br><br>
+        <!-- Sección: ¿Cómo funciona? -->
+        <section id="function">
+            <h2>¿How does it work?</h2>
+            <p> A set of pre-labeled emails (e.g., "spam" or "non-spam", "promotional" or "primary") is used for training. The data is processed to extract relevant features, such as:</p>
+            <ul>
+                <li>Frequently used words or phrases</li>
+                <li>Sender and email address</li>
+                <li>Message format (use of capital letters, links, attachments)</li>
+                <li>Date and time sent</li>
+                <li>Subject line structure</li>
+            </ul>
+        </section>
 
-    <button onclick="predict()">Predict</button>
+        <!-- Sección: Entrenamiento del modelo -->
+        <section id="model">
+            <h2>Model training</h2>
+            <p>A machine learning algorithm is selected and trained. The most commonly used are:</p>
+           <ul>
+                <li>Naive Bayes: Simple and efficient, very common for text classification</li>
+                <li>Decision Trees and Random Forests: Good for identifying complex patterns</li>
+                <li>SVM (Support Vector Machines): Effective in binary classification problems (spam/no spam)</li>
+                <li>Neural Networks: For cases with large volumes of data and complex features</li>
+                
+            </ul>
+        
+        </section>
 
-    <h3 id="result"></h3>
+        <!-- Sección: Clasificación y mejora continua -->
+        <section id="Classification">
+            <h2>Classification and continuous improvement</h2>
+            <p>Once trained, the model classifies new incoming emails. Furthermore, the systems typically include a feedback mechanism: when the user marks an email as "spam" or corrects its classification, that information is used to retrain and refine the model, improving its accuracy over time.</p>
+            <ul>
+                <li>Spam detection</li>
+                <li>Categorization</li>
+                <li>Malicious content detection</li>
+            </ul>
+        </section>
 
-    <script>
-        function predict() {
-            let age = document.getElementById("age").value;
-            let income = document.getElementById("income").value;
+        <!-- Sección: Ventajas -->
+        <section id="advantages">
+            <h2>Advantages</h2>
+             <ul>
+                <li> Greater accuracy: Adapts to new types of spam or messages as they appear</li>
+                <li>Fewer false positives: Reduces the risk of marking important emails as spam</li>
+                <li>Automation: No manual keyword list updates required</li>
+                <li>Scalability: Works efficiently with large email volumes</li>
 
-            // Simulación de modelo ML simple
-            if (age > 21 && income > 2000) {
-                document.getElementById("result").innerHTML = 
-                    "Prediction: Loan Approved ✅";
-            } else {
-                document.getElementById("result").innerHTML = 
-                    "Prediction: Loan Rejected ❌";
-            }
-        }
-    </script>
+            </ul>
+            
+        </section>
 
+        <!-- Sección: Desafíos -->
+        <section id="Challenges">
+            <h2>Challenges</h2>
+           <ul>
+                <li>Spam evolution: Spammers change their techniques to avoid detection</li>
+                <li>Languages and dialects: Difficulty adapting to different languages or linguistic variations</li>
+                <li>False negatives: Spam emails that go undetected</li>
+                <li>Privacy: Processing email content can raise concerns about user privacy</li>
+                
+            </ul>
+        
+        </section>
+
+        <!-- Sección: Ejemplos de plataformas que lo utilizan -->
+        <section id="examples">
+            <h2>Examples of platforms that use it</h2>
+             <ul>
+                <li>Gmail (Google)</li>
+                <li>Outlook (Microsoft)</li>
+                <li>Yahoo Mail</li>
+                <li>Business email services such as IBM Notes or Zoho Mail</li>
+
+            </ul>
+            
+        </section>
+
+
+    </div>
+
+    <!-- Pie de página -->
+    <footer class="container-fluid">
+        <p>JENDY LORENA GONZALEZ</p>
+    </footer>
+
+    <!-- Enlace al JS de Bootstrap 5 (Opcional, pero recomendado) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
