@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Regresión Logística</title>
+</head>
+<body>
+
+<h2>Predicción de Compra</h2>
+
+<form method="POST">
+    Edad: <input type="number" name="edad"><br>
+    Ingreso: <input type="number" name="ingreso"><br>
+    Visitas Web: <input type="number" name="visitas"><br>
+    Tiempo en sitio: <input type="number" name="tiempo"><br>
+    Compras previas: <input type="number" name="compras"><br>
+    Descuento usado (0 o 1): <input type="number" name="descuento"><br><br>
+
+    <button type="submit">Predecir</button>
+</form>
+
+{% if result %}
+    <h3>Resultado: {{ result }}</h3>
+{% endif %}
+
+</body>
+</html>
