@@ -1,42 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Machine Learning Example</title>
-</head>
-<body>
+    <title>Machine Learning </title>
 
-    <h1>First Page</h1>
-    <p>Machine Learning Class</p>
-    
-    <h2>Loan Approval Prediction (ML Use Case)</h2>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <label>Age:</label>
-    <input type="number" id="age"><br><br>
-
-    <label>Monthly Income ($):</label>
-    <input type="number" id="income"><br><br>
-
-    <button onclick="predict()">Predict</button>
-
-    <h3 id="result"></h3>
-
-    <script>
-        function predict() {
-            let age = document.getElementById("age").value;
-            let income = document.getElementById("income").value;
-
-            // Simulación de modelo ML simple
-            if (age > 21 && income > 2000) {
-                document.getElementById("result").innerHTML = 
-                    "Prediction: Loan Approved ✅";
-            } else {
-                document.getElementById("result").innerHTML = 
-                    "Prediction: Loan Rejected ❌";
-            }
+    <style>
+        body {
+            background-color: #f4f6f9;
         }
-    </script>
+
+        .hero {
+            height: 85vh;
+            background: linear-gradient(to right, #4e73df, #1cc88a);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .card {
+            border-radius: 15px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        footer {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+
+</header>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+
+        <a class="navbar-brand" href="{{ url_for('home') }}">ML App</a>
+
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menu">
+
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ url_for('home') }}">Home</a>
+                </li>
+
+                <!-- USE CASES -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        ML Use Cases
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/case1">Use Case 1</a></li>
+                        <li><a class="dropdown-item" href="/case2">Use Case 2</a></li>
+                        <li><a class="dropdown-item" href="/case3">Use Case 3</a></li>
+                        <li><a class="dropdown-item" href="/case4">Use Case 4</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        Supervised Learning
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/concepts">Basic Concepts</a></li>
+                        <li><a class="dropdown-item" href="/application_linear">Application Business</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<section class="hero">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Machine Learning Website</h1>
+        <p class="lead mt-3">
+            This page showcases machine learning concepts through
+            4 real-world use cases and a supervised learning model based on linear
+            regression for business (housing price prediction).
+        </p>
+        <a href="/case1" class="btn btn-light btn-lg mt-4">Explore Use Cases</a>
+    </div>
+    <div class="text-center">
+        <img src="{{ url_for('static', filename='images/image1.jpg') }}" class="img-fluid rounded shadow"
+            style="max-width: 750px;">
+    </div>
+
+</section>
+
+</section>
+
+
+<!--  INTRODUCTION -->
+<div class="container mt-5 text-center">
+    <h2>Project Overview</h2>
+    <p class="mt-3">
+        This page was developed for practicing machine learning.
+
+        It includes four real-world case studies
+        that we chose as a guide for developing our
+        linear regression project for the business sector (housing price prediction).
+    </p>
+</div>
+
+<!--  CARDS -->
+<div class="container mt-5">
+    <div class="row text-center g-4">
+
+        <div class="col-md-4">
+            <div class="card shadow p-4">
+                <h4>Machine Learning Use Cases</h4>
+                <p>
+                    Explore four real-world problems solved using Machine Learning techniques.
+                </p>
+                <a href="/case1" class="btn btn-primary">View Use Cases</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow p-4">
+                <h4>Linear Regression Concepts</h4>
+                <p>
+                    Find linear regression concepts and discover their content
+                </p>
+                <a href="/concepts" class="btn btn-success">Learn Concepts</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow p-4">
+                <h4>Prediction System</h4>
+                <p>
+                    Discover our use case for (Home Price Prediction)
+                </p>
+                <a href="/application" class="btn btn-warning">Try Prediction</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="bg-dark text-white text-center p-3">
+    <p class="mb-0">Machine Learning</p>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>

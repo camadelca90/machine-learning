@@ -1,85 +1,75 @@
-<<<<<<< Updated upstream
-from flask import Flask, render_template
-=======
+
 from flask import Flask, render_template, request
-import LinealRegresion
-import pandas as pd
-from sklearn.linear_model import LogisticRegression
->>>>>>> Stashed changes
+import house_price
 
 app = Flask(__name__)
-print("INICIANDO APP...")
-
-
-# =========================
-# MODELO LOGÍSTICO
-# =========================
-
-print("MODELO ENTRENADO")
-
-df_log = pd.read_csv("logistic_regression/dataset_regresion_logistica.csv")
-
-X_log = df_log[["edad", "ingreso_mensual", "visitas_web_mes", 
-                "tiempo_sitio_min", "compras_previas", "descuento_usado"]]
-
-y_log = df_log["target"]
-
-model_log = LogisticRegression(max_iter=1000)
-model_log.fit(X_log, y_log)
-
-def predecir_compra(edad, ingreso, visitas, tiempo, compras, descuento):
-    datos = [[edad, ingreso, visitas, tiempo, compras, descuento]]
-    pred = model_log.predict(datos)[0]
-
-    if pred == 1:
-        return "El cliente probablemente COMPRA"
-    else:
-        return "El cliente probablemente NO COMPRA"
-
-
-# =========================
-# RUTAS
-# =========================
 
 @app.route('/')
 def home():
-    return "HELLO FLASK"
-
-@app.route('/firstpage')
-def firstpage():
-<<<<<<< Updated upstream
-    return render_template('index.html')
-=======
     return render_template('index.html')
 
+@app.route('/case1')
+def case1():
+    return render_template('case1.html')
+
+@app.route('/case2')
+def case2():
+    return render_template('case2.html')
+
+@app.route('/case3')
+def case3():
+    return render_template('case3.html')
+
+@app.route('/case4')
+def case4():
+    return render_template('case4.html')
 
 
+@app.route('/concepts')
+def concepts():
+    return render_template('concepts.html')
 
-@app.route('/linealRegression', methods=["GET","POST"])
-def caculateGrade():
-    calculateResult = None
+@app.route('/application', methods=["GET","POST"])
+def application():
+    resultado = None
+
     if request.method == "POST":
         hours = float(request.form["hours"])
-        calculateResult = LinealRegresion.calculateGrade(hours)
-    return render_template("linearRegressionGRades.html", result=calculateResult)
+        resultado = LinealRegresion.calculateGrade(hours)
 
+    return render_template('application.html', resultado=resultado)
 
-@app.route('/logisticRegression', methods=["GET","POST"])
-def logistic():
+@app.route('/application_linear', methods=["GET","POST"])
+def application_linear():
+
     result = None
 
     if request.method == "POST":
-        edad = float(request.form["edad"])
-        ingreso = float(request.form["ingreso"])
-        visitas = float(request.form["visitas"])
-        tiempo = float(request.form["tiempo"])
-        compras = float(request.form["compras"])
-        descuento = float(request.form["descuento"])
 
-        result = predecir_compra(edad, ingreso, visitas, tiempo, compras, descuento)
+        area = float(request.form["area"])
+        rooms = float(request.form["habitaciones"])
+        bathrooms = float(request.form["banos"])
+        floors = float(request.form["pisos"])
+        garage = float(request.form["garaje"])
+        age = float(request.form["antiguedad"])
+        distance = float(request.form["distancia"])
 
-    return render_template("logistic.html", result=result)
+        result = house_price.predict_price(
+            area,
+            rooms,
+            bathrooms,
+            floors,
+            garage,
+            age,
+            distance
+        )
+
+    return render_template(
+        'linear_regre_app.html',
+        result=result
+    )
+
 
 if __name__ == "__main__":
     app.run(debug=True)
->>>>>>> Stashed changes
+
