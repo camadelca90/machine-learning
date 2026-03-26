@@ -1,0 +1,45 @@
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+
+        <a class="navbar-brand" href="{{ url_for('home') }}">ML App</a>
+
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="menu">
+
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ url_for('home') }}">Home</a>
+                </li>
+
+                <!-- USE CASES -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        ML Use Cases
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/case1">Use Case 1</a></li>
+                        <li><a class="dropdown-item" href="/case2">Use Case 2</a></li>
+                        <li><a class="dropdown-item" href="/case3">Use Case 3</a></li>
+                        <li><a class="dropdown-item" href="/case4">Use Case 4</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        Supervised Learning
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/concepts">Basic Concepts</a></li>
+                        <li><a class="dropdown-item" href="/application_linear">Application Business</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
