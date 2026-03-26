@@ -54,3 +54,32 @@ Clone the repository
 
 bash
 git clone https://github.com/camadelca90/machine-learning.git
+
+Project Structure
+
+machine-learning/
+│
+├── app.py
+├── house_price.py
+├── requirements.txt
+├── logistic_regression/
+│   └── dataset_precios_inmuebles.xlsx
+│
+├── templates/
+│   ├── home.html
+│   ├── linear_regression.html
+│   ├── form.html
+│
+└── static/
+    └── images/
+
+Machine Learning Model
+
+The project uses a Linear Regression model implemented with Scikit-learn.
+
+Steps:
+
+- Load dataset using Pandas
+- Select relevant features
+- Train model using LinearRegression()
+- Predict house price from user input
