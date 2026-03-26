@@ -7,103 +7,99 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>House Price Prediction</title>
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  
+
 <style>
 
 body{
-    font-family:'Poppins', sans-serif;
-    background: linear-gradient(120deg,#eef2ff,#f8fafc);
+font-family:'Poppins', sans-serif;
+background: linear-gradient(120deg,#eef2ff,#f8fafc);
 }
 
 header{
-    background-color:#50bbc1;
-    color:#0a0a0a;
-    text-align:center;
-    padding:3rem 0;
-    margin-bottom:2rem;
+background-color:#50bbc1;
+color:#0a0a0a;
+text-align:center;
+padding:3rem 0;
+margin-bottom:2rem;
 }
 
 footer{
-    text-align:center;
-    padding:1rem 0;
-    background-color:#50bbc1;
-    color:white;
-    margin-top:2rem;
+text-align:center;
+padding:1rem 0;
+background-color:#50bbc1;
+color:white;
+margin-top:2rem;
 }
 
 .main-box{
-    background:white;
-    padding:45px;
-    margin-top:40px;
-    margin-bottom:40px;
-    border-radius:18px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+background:white;
+padding:45px;
+margin-top:40px;
+margin-bottom:40px;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
 .section{
-    margin-top:40px;
+margin-top:40px;
 }
 
 .title{
-    color:#4f46e5;
-    font-weight:600;
-    margin-bottom:15px;
+color:#4f46e5;
+font-weight:600;
+margin-bottom:15px;
 }
 
 .subtitle{
-    color:#6b7280;
-    margin-bottom:10px;
+color:#6b7280;
+margin-bottom:10px;
 }
 
 .card-style{
-    border:none;
-    border-radius:14px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.05);
+border:none;
+border-radius:14px;
+box-shadow:0 4px 12px rgba(0,0,0,0.05);
 }
 
 .btn-custom{
-    background:linear-gradient(135deg,#42caca,#4f46e5);
-    color:white;
-    border:none;
-    padding:18px 70px;
-    border-radius:12px;
-    font-weight:600;
-    font-size:18px;
-    display:block;
-    margin:30px auto;
-    transition:0.3s;
+background:linear-gradient(135deg,#42caca,#4f46e5);
+color:white;
+border:none;
+padding:18px 70px;
+border-radius:12px;
+font-weight:600;
+font-size:18px;
+display:block;
+margin:30px auto;
+transition:0.3s;
 }
 
 .btn-custom:hover{
-    transform:scale(1.05);
-    background:#71b6c7;
+transform:scale(1.05);
+background:#71b6c7;
 }
 
 .result-box{
-    background:#ecfeff;
-    border-left:6px solid #06b6d4;
-    padding:20px;
-    border-radius:12px;
-    font-size:20px;
-    font-weight:600;
-    color:#0f172a;
+background:#ecfeff;
+border-left:6px solid #06b6d4;
+padding:20px;
+border-radius:12px;
+font-size:20px;
+font-weight:600;
+color:#0f172a;
 }
 
 li{
-    color:#6b7280;
+color:#6b7280;
 }
 
 label{
-    font-weight:500;
-    margin-bottom:5px;
-}
-
-img{
-    margin-top:15px;
+font-weight:500;
+margin-bottom:5px;
 }
 
 </style>
@@ -112,11 +108,12 @@ img{
 
 
 <body>
+
 {% include 'bar.html' %}
 
 <header class="container-fluid">
-    <h1>House Price Prediction</h1>
-    <p>Machine Learning Model with Linear Regression</p>
+<h1>House Price Prediction</h1>
+<p>Machine Learning Model with Linear Regression</p>
 </header>
 
 
@@ -132,8 +129,15 @@ img{
 
 <p class="subtitle">
 The goal of this project is to predict property prices using machine learning techniques, specifically linear regression.
-In the real estate sector, a property's value depends on multiple factors such as size, number of rooms, location, and age.
-A predictive model allows faster and more objective price estimation based on historical data.
+In the real estate sector, a property's value depends on multiple factors, such as property size, number of rooms, location,
+building age, and other relevant characteristics.
+
+Estimating a property's appropriate price can be a complex process if done manually.
+By using a predictive model, it's possible to analyze historical property data and find relationships between property characteristics and their sale price.
+
+This allows for faster and more objective estimates based on real data.
+This type of solution is useful for real estate companies, buyers, and sellers,
+as it facilitates informed decision-making.
 </p>
 
 <img src="{{ url_for('static', filename='images/image22.jpg') }}"
@@ -149,8 +153,18 @@ style="max-width:500px;">
 <h3 class="title">2. Explanation of the data set</h3>
 
 <p class="subtitle">
-The dataset contains information about different properties and their main characteristics.
-Each row represents a property and each column represents a variable influencing price.
+The dataset used contains information on different real estate properties and their main characteristics.
+Each row represents a property, and each column represents a variable that can influence its final price.
+
+The dataset includes structural variables such as square footage, number of bedrooms and bathrooms,
+number of floors, garage availability, age, and distance from the city center.
+
+It also includes the target variable price,
+which represents the property's value in Colombian pesos.
+
+This data allows the machine learning model to be trained to identify patterns and relationships
+between property characteristics and their prices,
+which in turn enables predictions about new properties.
 </p>
 
 <img src="{{ url_for('static', filename='images/image23.jpg') }}"
@@ -165,15 +179,28 @@ style="max-width:500px;">
 
 <h3 class="title">3. Variables used</h3>
 
+<p class="subtitle">
+
+Dependent variable:
+price → represents the property's value in Colombian pesos.
+
+Independent variables:
+
+</p>
+
 <ul>
-<li>Area_m²</li>
-<li>Bedrooms</li>
-<li>Bathrooms</li>
-<li>Floors</li>
-<li>Garage</li>
-<li>Age</li>
-<li>Distance_center_km</li>
+<li>Area_m² → surface area in square meters</li>
+<li>Bedrooms → total number of bedrooms</li>
+<li>Bathrooms → number of bathrooms</li>
+<li>Floors → number of floors</li>
+<li>Garage → indicates if the house has garage</li>
+<li>Age → property age</li>
+<li>Distance_center_km → distance from city center</li>
 </ul>
+
+<p class="subtitle">
+These variables allow the model to analyze how each characteristic influences the final property price.
+</p>
 
 <img src="{{ url_for('static', filename='images/image24.png') }}"
 class="img-fluid rounded shadow"
@@ -188,8 +215,23 @@ style="max-width:500px;">
 <h3 class="title">4. Data preparation</h3>
 
 <p class="subtitle">
-Data was loaded using pandas and separated into input variables and target variable.
-Then the linear regression model was trained using scikit-learn.
+
+Before training the machine learning model,
+the dataset had to be prepared.
+
+First, the file containing the housing information was loaded using the pandas library.
+
+Then, the independent variables were separated from the dependent variable (price).
+
+After organizing the data,
+the linear regression model was trained using scikit-learn.
+
+The model analyzes the relationship between the input variables and the housing price
+to find a mathematical function that allows predictions.
+
+Data preparation is a fundamental step in machine learning
+because it ensures the information is correctly structured.
+
 </p>
 
 <img src="{{ url_for('static', filename='images/image25.jpg') }}"
@@ -205,7 +247,15 @@ style="max-width:500px;">
 <h3 class="title">5. Regression graph</h3>
 
 <p class="subtitle">
-The graph shows the relationship between area and price.
+
+The regression graph shows the relationship between one independent variable and the price.
+
+In this case,
+we observe how the area of the house influences the final value.
+
+Generally,
+larger houses tend to have higher prices.
+
 </p>
 
 <img src="{{ url_for('static', filename='images/image21.png') }}"
@@ -221,8 +271,21 @@ style="max-width:800px;">
 <h3 class="title">6. Interpretation of results</h3>
 
 <p class="subtitle">
-The model estimates house prices based on characteristics like size, rooms, and location.
-Larger houses tend to have higher prices.
+
+The linear regression model estimates house prices based on their characteristics.
+
+After training with historical data,
+the model identifies patterns that explain how each variable affects price.
+
+For example:
+
+larger houses usually cost more,
+houses closer to the city center tend to have higher value,
+properties with garage may increase price.
+
+The prediction is not exact,
+but it provides a useful estimate for decision making in real estate.
+
 </p>
 
 <img src="{{ url_for('static', filename='images/image26.jpg') }}"
@@ -267,12 +330,12 @@ style="max-width:500px;">
 </div>
 
 <div class="col-md-4 mb-3">
-<label>Age (years)</label>
+<label>Age</label>
 <input type="number" name="antiguedad" class="form-control">
 </div>
 
 <div class="col-md-4 mb-3">
-<label>Distance to city center (km)</label>
+<label>Distance center (km)</label>
 <input type="number" name="distancia" class="form-control">
 </div>
 
@@ -304,8 +367,10 @@ Predict price
 
 
 <footer class="container-fluid">
-<p>Jendy, Anamaria, Carlos Mario</p>
+<p>Jendy, Anamaria, Carlos</p>
 </footer>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
