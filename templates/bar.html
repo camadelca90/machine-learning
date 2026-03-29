@@ -1,24 +1,21 @@
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-
+    <div class="container-fluid">
         <a class="navbar-brand" href="{{ url_for('home') }}">ML App</a>
 
-        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="menu">
-
-            <ul class="navbar-nav ms-auto">
-
+            
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link active" href="{{ url_for('home') }}">Home</a>
                 </li>
 
                 <!-- USE CASES -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
                         ML Use Cases
                     </a>
                     <ul class="dropdown-menu">
@@ -29,17 +26,168 @@
                     </ul>
                 </li>
 
+                
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        Supervised Learning
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        Supervised Machine Learning
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/concepts">Basic Concepts</a></li>
-                        <li><a class="dropdown-item" href="/application_linear">Application Business</a></li>
+                        <!-- Regression -->
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#">
+                                Linear Regression
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/concepts">Basic Concepts</a></li>
+                                <li><a class="dropdown-item" href="/application_linear">Application Business</a></li>
+                            </ul>
+                        </li>
+                        <!-- Logistic -->
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#">
+                                Logistic Regression
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/concepts_logistic">Basic Concepts</a></li>
+                                <li><a class="dropdown-item" href="/application_logistic">Application Business</a></li>
+                            </ul>
+                        </li>
+                        <!-- Classification -->
+                        <li class="dropdown-submenu">
+                            <a class="dropdown-item dropdown-toggle" href="#">
+                                Assigned Classification Model
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/concepts_model">Basic Concepts</a></li>
+                                <li><a class="dropdown-item" href="/application_model">Application Business</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
-
             </ul>
         </div>
     </div>
 </nav>
+
+<style>
+    /* stail */
+    .navbar {
+        padding: 0.8rem 1rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-right: 3rem; 
+    }
+    
+    /* Spacies */
+    .navbar-nav .nav-item {
+        margin-right: 0.5rem; 
+    }
+    
+    .navbar-nav .nav-link {
+        font-size: 1rem;
+        padding: 0.5rem 1rem !important;
+        border-radius: 0.375rem;
+        transition: all 0.3s ease;
+    }
+    
+    .navbar-nav .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+    }
+    
+    /*  dropdowns */
+    .dropdown-menu {
+        border-radius: 0.5rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        border: none;
+        margin-top: 0.5rem;
+    }
+    
+    .dropdown-item {
+        padding: 0.6rem 1.5rem;
+        transition: all 0.2s ease;
+    }
+    
+    .dropdown-item:hover {
+        background-color: #f8f9fa;
+        transform: translateX(5px);
+    }
+    
+    /* submenus */
+    .dropdown-submenu {
+        position: relative;
+    }
+
+    .dropdown-submenu .dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-top: -1px;
+        margin-left: 0.5rem;
+    }
+
+    /* Efecto hover para submenús */
+    .dropdown-submenu:hover > .dropdown-menu {
+        display: block;
+    }
+
+    /* arrows */
+    .dropdown-submenu .dropdown-toggle::after {
+        float: right;
+        margin-top: 0.5rem;
+        border-top: 0.3rem solid transparent;
+        border-bottom: 0.3rem solid transparent;
+        border-left: 0.3rem solid;
+        vertical-align: middle;
+    }
+
+    /* Responsive */
+    @media (max-width: 991.98px) {
+        .navbar-nav .nav-item {
+            margin-right: 0;
+            margin-top: 0.5rem;
+        }
+        
+        .dropdown-submenu .dropdown-menu {
+            position: static;
+            float: none;
+            width: auto;
+            margin-top: 0;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            margin-left: 1rem;
+        }
+        
+        .dropdown-submenu .dropdown-toggle::after {
+            float: none;
+            margin-left: 0.5rem;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            transform: none;
+        }
+        
+        .navbar-brand {
+            margin-right: 1rem;
+        }
+    }
+    
+   
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .dropdown-menu {
+        animation: slideIn 0.3s ease;
+    }
+</style>
+
