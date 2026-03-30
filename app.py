@@ -33,6 +33,11 @@ def concepts():
 def con_logistic():
     return render_template('con_logistic.html')
 
+    
+@app.route('/concepts_Sup')
+def concepts_Sup():
+    return render_template('concepts_Sup.html')
+
 @app.route('/logistic', methods=["GET","POST"])
 def logistic():
     resultado = None
