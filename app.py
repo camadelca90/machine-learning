@@ -28,16 +28,21 @@ def case4():
 @app.route('/concepts')
 def concepts():
     return render_template('concepts.html')
+    
+@app.route('/con_logistic')
+def con_logistic():
+    return render_template('con_logistic.html')
 
-@app.route('/application', methods=["GET","POST"])
-def application():
+    
+@app.route('/concepts_Sup')
+def concepts_Sup():
+    return render_template('concepts_Sup.html')
+
+@app.route('/logistic', methods=["GET","POST"])
+def logistic():
     resultado = None
 
-    if request.method == "POST":
-        hours = float(request.form["hours"])
-        resultado = LinealRegresion.calculateGrade(hours)
-
-    return render_template('application.html', resultado=resultado)
+    return render_template('logistic.html', resultado=resultado)
 
 @app.route('/application_linear', methods=["GET","POST"])
 def application_linear():

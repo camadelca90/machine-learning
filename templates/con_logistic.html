@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Logistic Regression - Basic Concepts</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+
+body{
+    font-family:'Poppins', sans-serif;
+    background:#f5f7fb;
+}
+
+.hero{
+    background: linear-gradient(120deg,#0d6efd,#4facfe);
+    color:white;
+    padding:70px 20px;
+    border-radius:0 0 50px 50px;
+    text-align:center;
+}
+
+.section-title{
+    font-weight:500;
+    color:#0d6efd;
+    margin-bottom:15px;
+}
+
+.card{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+    transition:0.3s;
+    height:100%;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+}
+
+.icon-circle{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:#e7f1ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    color:#0d6efd;
+    margin-bottom:10px;
+}
+
+.formula{
+    background:#f1f3f8;
+    padding:15px;
+    border-radius:10px;
+    font-size:18px;
+    margin-top:10px;
+}
+
+.highlight{
+    background:#e8f2ff;
+    padding:10px;
+    border-radius:5px;
+    border-left:5px solid #0d6efd;
+}
+
+</style>
+
+</head>
+
+<body>
+{% include 'bar.html' %}
+<div class="hero">
+
+    <h1>Logistic Regression</h1>
+
+        <p class="lead">
+        Understanding the fundamental concepts 
+        </p>
+
+    </div>
+
+    <div class="container mt-5">
+
+        <div class="row g-4">
+
+        <!-- What is Logistic -->
+        <div class="col-lg-6">
+
+        <div class="card p-4">
+
+    <div class="icon-circle">1</div>
+
+        <h4 class="section-title">What is Logistic Regression?</h4>
+
+        <p>
+        Logistic regression is widely applied in fields such as data analysis,
+        machine learning, and business forecasting to understand relationships between variables.
+        It uses a logistic function to model relationships and provides probabilities instead
+        of exact numeric predictions.
+        </p>
+
+        <p>
+        It simplifies complex data patterns and helps organizations make data-driven decisions.
+        Businesses use logistic regression to identify trends, improve marketing campaigns, 
+        optimize customer segmentation, and increase operational efficiency.
+        </p>
+
+    </div>
+
+    </div>
+
+
+    <!-- 2 Difference-->
+    <div class="col-lg-6">
+
+        <div class="card p-4">
+
+        <div class="icon-circle">2</div>
+
+            <h4 class="section-title">Difference Between Regression and Classification</h4>
+
+            <p>
+
+             Regression predicts continuous values such as temperature or price.
+             Classification predicts discrete class labels such as spam or not spam.
+
+            </p>
+
+            <ul>
+
+                <li>Regression example: predicting student height.</li>
+
+                <li>Classification example: predicting whether an email is spam.</li>
+
+                <li>Regression output → continuous values.</li>
+
+                <li>Classification output → probabilities of belonging to a class.</li>
+
+            </ul>
+
+            <p>
+
+            Regression can estimate values with infinite possibilities, while classification determines categories based on probability.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- 3 Binary-->
+    <div class="col-lg-6">
+
+        <div class="card p-4">
+
+        <div class="icon-circle">3</div>
+
+            <h4 class="section-title">Binary Classification</h4>
+
+            <p>
+
+             Binary classification assigns observations into two groups according to a rule.
+
+             Examples include:
+
+            </p>
+
+                <ul>
+
+                <li>Medical diagnosis: disease or no disease</li>
+
+                <li>Quality control: product accepted or rejected</li>
+
+                <li>Search engines: relevant or irrelevant results</li>
+
+            </ul>
+
+            <p>
+
+            False positives and false negatives are important considerations depending on the problem context.
+
+            </p>
+
+            </div>
+
+        </div>
+
+
+    <!-- 4 Variable-->
+    <div class="col-lg-6">
+
+        <div class="card p-4">
+
+        <div class="icon-circle">4</div>
+
+        <h4 class="section-title">Target Variable / Class Label (y)</h4>
+
+        <p>
+
+        The target variable is the value the model aims to predict. It represents the known answer used during training.
+
+        </p>
+
+        <div class="highlight">
+
+            Binary values:
+            <br>
+
+            1 → event occurs (success)
+            <br>
+
+            0 → event does not occur (failure)
+
+            </div>
+
+            <p>
+
+            Example:
+            Smoker → Yes (1) or No (0)
+
+            </p>
+
+        </div>
+
+     </div>
+
+
+    <!-- 5Features -->
+    <div class="col-lg-6">
+
+        <div class="card p-4">
+
+            <div class="icon-circle">5</div>
+
+                <h4 class="section-title">Features / Predictors (X)</h4>
+
+                <p>
+
+                 Features are measurable variables used as input for prediction.
+
+                 Mathematically:
+
+                </p>
+
+                <div class="formula">
+
+                $$ X = [x_1, x_2, x_3, ..., x_n] $$
+
+            </div>
+
+            <p>
+
+             Each feature has a weight that represents its importance.
+
+            </p>
+
+                <ul>
+
+                    <li>Positive weight → increases probability</li>
+
+                    <li>Negative weight → decreases probability</li>
+
+                </ul>
+
+            <p>
+
+            The bias term allows the decision boundary to shift.
+
+            </p>
+
+        </div>
+
+        </div>
+
+
+    <!-- 6 -->
+    <div class="col-lg-6">
+
+        <div class="card p-4">
+
+            <div class="icon-circle">6</div>
+
+                <h4 class="section-title">Probability Estimation (ŷ)</h4>
+
+                <p>
+
+                Logistic regression estimates the probability that a data point belongs to Class 1.
+
+                </p>
+
+                <div class="formula">
+
+                $$ z = w_1x_1 + w_2x_2 + ... + w_nx_n + b $$
+
+                 </div>
+
+                <div class="formula">
+
+                   $$ \sigma(z) = \frac{1}{1 + e^{-z}} $$
+
+            </div>
+
+            <p>
+
+            The output value ranges between 0 and 1.
+
+            Example:
+            0.92 means a 92% probability of belonging to the positive class.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- 7 -->
+    <div class="col-lg-6">
+
+        <div class="card p-4">
+
+                <div class="icon-circle">7</div>
+
+                <h4 class="section-title">Classification Threshold</h4>
+
+                <p>
+
+                The threshold converts probability into a class label.
+
+                </p>
+
+                <div class="formula">
+
+                P ≥ 0.5 → Class 1
+
+                <br>
+
+                P &lt; 0.5 → Class 0
+
+            </div>
+
+            <p>
+
+             Threshold selection depends on context:
+
+            </p>
+
+            <ul>
+
+                <li>Medical diagnosis → lower threshold to avoid missing disease</li>
+
+                <li>Legal decisions → higher threshold for certainty</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+
+    <!-- 8 -->
+    <div class="col-lg-6">
+
+        <div class="card p-4">
+
+            <div class="icon-circle">8</div>
+
+            <h4 class="section-title">Decision Boundary</h4>
+
+            <p>
+
+             The decision boundary separates classes based on probability.
+
+            </p>
+
+            <p>
+
+             In simple logistic regression, the boundary is linear.
+
+             Points on one side belong to Class 1, while points on the other belong to Class 0.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- 9 Example-->
+    <div class="col-12">
+
+        <div class="card p-4">
+
+            <div class="icon-circle">9</div>
+
+                <h4 class="section-title">Real-World Example: Customer Churn</h4>
+
+                <p>
+
+                 A telecommunications company predicts whether a customer will cancel their subscription.
+
+                </p>
+
+                <div class="highlight">
+
+                 Features:
+
+                <br>
+
+                 x₁ → contract duration
+
+                <br>
+
+                 x₂ → monthly cost
+
+                <br>
+
+                 x₃ → number of service calls
+
+            </div>
+
+            <p>
+
+             If the model predicts probability = 0.78 and the threshold = 0.6, the customer is classified as high risk.
+
+            </p>
+
+            <p>
+
+             The company can offer promotions to retain the customer.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+</div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
