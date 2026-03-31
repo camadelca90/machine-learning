@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.svm import LinearSVC
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import (
@@ -7,7 +8,8 @@ from sklearn.metrics import (
     recall_score,
     f1_score,
     confusion_matrix,
-    roc_auc_score
+    roc_auc_score,
+    roc_curve
 )
 
 # Load dataset and train model once
@@ -77,3 +79,56 @@ def predict_customer(data):
         return "High probability of purchase"
     else:
         return "Low probability of purchase"
+
+
+# ===============================
+# FUNCTION 3: Generate confusion matrix plot
+# ===============================
+def generate_confusion_matrix_plot():
+
+    y_pred = model.predict(X_test)
+    cm = confusion_matrix(y_test, y_pred)
+
+    plt.figure(figsize=(5, 4))
+    plt.imshow(cm, interpolation='nearest')
+    plt.title("Confusion Matrix")
+    plt.colorbar()
+
+    labels = ["No Purchase", "Purchase"]
+    plt.xticks([0, 1], labels)
+    plt.yticks([0, 1], labels)
+
+    for i in range(2):
+        for j in range(2):
+            plt.text(j, i, cm[i, j], ha="center", va="center")
+
+    plt.xlabel("Predicted")
+    plt.ylabel("Actual")
+    plt.tight_layout()
+    plt.savefig("static/confusion_matrix.png")
+    plt.close()
+
+
+# ===============================
+# FUNCTION 4: Generate ROC curve plot
+# ===============================
+def generate_roc_curve_plot():
+
+    y_scores = model.decision_function(X_test)
+    fpr, tpr, _ = roc_curve(y_test, y_scores)
+    roc_auc = roc_auc_score(y_test, y_scores)
+
+    plt.figure(figsize=(5, 4))
+    plt.plot(fpr, tpr, label=f"AUC = {roc_auc:.3f}")
+    plt.plot([0, 1], [0, 1], linestyle="--")
+    plt.xlabel("False Positive Rate")
+    plt.ylabel("True Positive Rate")
+    plt.title("ROC Curve")
+    plt.legend(loc="lower right")
+    plt.tight_layout()
+    plt.savefig("static/roc_curve.png")
+    plt.close()
+
+
+generate_confusion_matrix_plot()
+generate_roc_curve_plot()
