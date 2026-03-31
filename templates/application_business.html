@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assigned Classification Model</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 50%, #e0f2fe 100%);
+        color: #1f2937;
+    }
+
+    header {
+        background: linear-gradient(135deg, #4338ca, #06b6d4);
+        color: white;
+        text-align: center;
+        padding: 4rem 0;
+        margin-bottom: 2.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    header h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 0.75rem;
+    }
+
+    header p {
+        font-size: 1.2rem;
+        margin: 0;
+        opacity: 0.95;
+    }
+
+    .content-box {
+        background: white;
+        border-radius: 22px;
+        padding: 2.5rem;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.10);
+        margin-bottom: 2rem;
+    }
+
+    h2 {
+        color: #1e3a8a;
+        font-weight: 700;
+        margin-bottom: 1.2rem;
+    }
+
+    h3 {
+        color: #0f172a;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #334155;
+    }
+
+    .form-control {
+        border-radius: 12px;
+        padding: 0.75rem 0.9rem;
+        border: 1px solid #cbd5e1;
+        box-shadow: none;
+        transition: all 0.25s ease;
+    }
+
+    .form-control:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.18);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #4f46e5, #06b6d4);
+        border: none;
+        border-radius: 14px;
+        padding: 0.85rem 1.6rem;
+        font-weight: 600;
+        font-size: 1rem;
+        box-shadow: 0 8px 18px rgba(79, 70, 229, 0.25);
+        transition: all 0.25s ease;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        background: linear-gradient(135deg, #4338ca, #0891b2);
+    }
+
+    .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .metric-card {
+        background: linear-gradient(135deg, #f8fafc, #eef2ff);
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 1rem 1.2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .metric-card strong {
+        display: block;
+        color: #1d4ed8;
+        margin-bottom: 0.35rem;
+        font-size: 0.95rem;
+    }
+
+    .metric-value {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+    .matrix-box {
+        background: #f8fafc;
+        border-left: 6px solid #06b6d4;
+        border-radius: 14px;
+        padding: 1rem 1.2rem;
+        font-size: 1.05rem;
+        margin-bottom: 2rem;
+    }
+
+    .result-box {
+        background: linear-gradient(135deg, #ecfeff, #eef2ff);
+        border-left: 6px solid #4f46e5;
+        border-radius: 14px;
+        padding: 1rem 1.2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #0f172a;
+        min-height: 58px;
+        display: flex;
+        align-items: center;
+    }
+
+    hr {
+        margin: 2rem 0;
+        border-top: 1px solid #cbd5e1;
+    }
+</style>
+
+</head>
+
+<body>
+
+{% include 'bar.html' %}
+
+<header class="container-fluid">
+    <h1>Support Vector Machine (LinearSVC)</h1>
+    <p>Assigned Classification Model - Application Business</p>
+</header>
+
+<div class="container">
+    <div class="content-box">
+    <h2>Model Metrics</h2>
+
+<div class="metrics-grid">
+    <div class="metric-card">
+        <strong>Accuracy</strong>
+        <div class="metric-value">{{ metrics.accuracy }}</div>
+    </div>
+
+    <div class="metric-card">
+        <strong>Precision</strong>
+        <div class="metric-value">{{ metrics.precision }}</div>
+    </div>
+
+    <div class="metric-card">
+        <strong>Recall</strong>
+        <div class="metric-value">{{ metrics.recall }}</div>
+    </div>
+
+    <div class="metric-card">
+        <strong>F1 Score</strong>
+        <div class="metric-value">{{ metrics.f1 }}</div>
+    </div>
+
+    <div class="metric-card">
+        <strong>ROC AUC</strong>
+        <div class="metric-value">{{ metrics.roc_auc }}</div>
+    </div>
+</div>
+
+<h3>Confusion Matrix</h3>
+<div class="matrix-box">
+    {{ metrics.confusion_matrix }}
+</div>
+
+    <hr class="my-4">
+
+    <h2>Customer Purchase Prediction</h2>
+
+    <form method="POST">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Age</label>
+                <input type="number" name="age" class="form-control" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Monthly Income (USD)</label>
+                <input type="number" name="income" class="form-control" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Website Visits (30 days)</label>
+                <input type="number" name="visits" class="form-control" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Average Session Minutes</label>
+                <input type="number" step="0.1" name="session" class="form-control" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Products Viewed</label>
+                <input type="number" name="products" class="form-control" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Cart Additions</label>
+                <input type="number" name="cart" class="form-control" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Previous Purchases</label>
+                <input type="number" name="previous" class="form-control" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Discount Clicks (30 days)</label>
+                <input type="number" name="discount" class="form-control" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Days Since Last Purchase</label>
+                <input type="number" name="days" class="form-control" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Support Tickets (6 months)</label>
+                <input type="number" name="tickets" class="form-control" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Email Open Rate (%)</label>
+                <input type="number" step="0.1" name="email" class="form-control" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Mobile User (0 or 1)</label>
+                <input type="number" name="mobile" min="0" max="1" class="form-control" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Premium Member (0 or 1)</label>
+                <input type="number" name="premium" min="0" max="1" class="form-control" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Predict Customer Behavior</button>
+    </form>
+
+    <h3 class="mt-4">Prediction Result</h3>
+    
+<div class="result-box">
+    {% if result is not none %}
+        {% if result == 1 %}
+            🟢 Customer WILL purchase
+        {% else %}
+            🔴 Customer will NOT purchase
+        {% endif %}
+    {% else %}
+        Waiting for input...
+    {% endif %}
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
