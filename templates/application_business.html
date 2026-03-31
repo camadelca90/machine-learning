@@ -148,6 +148,16 @@
             align-items: center;
         }
 
+        .interpretation-box {
+            background: linear-gradient(135deg, #fefce8, #eff6ff);
+            border-left: 6px solid #f59e0b;
+            border-radius: 14px;
+            padding: 1.25rem 1.4rem;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+            color: #334155;
+        }
+
         hr {
             margin: 2rem 0;
             border-top: 1px solid #cbd5e1;
@@ -194,6 +204,23 @@
                 <strong>ROC AUC</strong>
                 <div class="metric-value">{{ metrics.roc_auc }}</div>
             </div>
+        </div>
+
+        <h3>Metrics Interpretation</h3>
+        <div class="interpretation-box">
+            <p><strong>Accuracy</strong> shows the overall percentage of correct predictions made by the model.</p>
+            <p><strong>Precision</strong> indicates how many customers predicted as likely to purchase were actually positive cases.</p>
+            <p><strong>Recall</strong> measures how well the model identifies real customers with purchase intention.</p>
+            <p><strong>F1 Score</strong> balances precision and recall, which is useful when evaluating classification performance in a more complete way.</p>
+            <p><strong>ROC AUC</strong> reflects the model's ability to distinguish between customers likely to purchase and those unlikely to purchase.</p>
+
+            {% if metrics.accuracy >= 0.85 %}
+                <p><strong>Interpretation:</strong> The model shows strong classification performance and is suitable as a business support tool for identifying potential customers with purchase intention.</p>
+            {% elif metrics.accuracy >= 0.70 %}
+                <p><strong>Interpretation:</strong> The model shows acceptable performance, although it could be improved with more data preparation, feature engineering, or tuning.</p>
+            {% else %}
+                <p><strong>Interpretation:</strong> The model has limited predictive performance and should be improved before being used as a reliable support tool.</p>
+            {% endif %}
         </div>
 
         <h3>Confusion Matrix</h3>
