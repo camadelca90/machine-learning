@@ -3,84 +3,83 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Linear Support Vector Classification</title>
+    <title>Linear Support Vector Classification</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-<style>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f9fafb;
+        }
 
-body{
-    font-family:'Poppins',sans-serif;
-    background:#f9fafb;
-}
+        .hero {
 
-.hero{
+            background: linear-gradient(120deg, #0f172a, #1e3a8a);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
 
-        background:linear-gradient(120deg,#0f172a,#1e3a8a);
-        color:white;
-        padding:80px 20px;
-        text-align:center;
+        }
 
-}
+        .section {
 
-.section{
+            padding: 60px 0;
 
-    padding:60px 0;
+        }
 
-}
+        .card-custom {
 
-.card-custom{
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+            padding: 30px;
+            margin-bottom: 25px;
 
-    border:none;
-    border-radius:15px;
-    box-shadow:0 6px 18px rgba(0,0,0,0.07);
-    padding:30px;
-    margin-bottom:25px;
+        }
 
-}
+        .title {
 
-.title{
+            color: #1e3a8a;
+            font-weight: 600;
+            margin-bottom: 15px;
 
-    color:#1e3a8a;
-    font-weight:600;
-    margin-bottom:15px;
+        }
 
-}
+        .formula {
 
-.formula{
+            background: #eef2ff;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 18px;
 
-    background:#eef2ff;
-    padding:15px;
-    border-radius:10px;
-    margin:15px 0;
-    font-size:18px;
+        }
 
-}
+        .box {
 
-.box{
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 12px;
 
-    background:#f1f5f9;
-    padding:20px;
-    border-radius:12px;
+        }
 
-}
+        .highlight {
 
-.highlight{
+            background: #eff6ff;
+            padding: 15px;
+            border-radius: 10px;
 
-    background:#eff6ff;
-    padding:15px;
-    border-radius:10px;
-
-}
-
-</style>
+        }
+    </style>
 
 </head>
 
@@ -91,16 +90,16 @@ body{
 
         <h1>Linear Support Vector Classification (LinearSVC)</h1>
 
-         <p class="lead">
+        <p class="lead">
 
-         In-Depth Research and Technical Explanation
+            In-Depth Research and Technical Explanation
 
-         p>
+            p>
 
-        </div>
+    </div>
 
 
-        <div class="container">
+    <div class="container">
 
         <!-- 1 -->
 
@@ -108,33 +107,38 @@ body{
 
             <h3 class="title">1. Model Definition</h3>
 
-             <div class="card-custom">
+            <div class="card-custom">
 
-            <p>
+                <p>
 
-               LinearSVC (Linear Support Vector Classification) is a supervised machine learning model designed for high-performance classification into discrete categories.
+                    LinearSVC (Linear Support Vector Classification) is a supervised machine learning model designed for
+                    high-performance classification into discrete categories.
 
-            </p>
+                </p>
 
-             <p>
+                <p>
 
-             It belongs to the Support Vector Machine (SVM) family but differs because its decision boundary is strictly linear.
+                    It belongs to the Support Vector Machine (SVM) family but differs because its decision boundary is
+                    strictly linear.
 
-             </p>
+                </p>
 
-            <p>
+                <p>
 
-             Unlike standard SVC models that use kernels such as Radial Basis Function (RBF) or Polynomial, LinearSVC is built on the LIBLINEAR library, making it highly efficient for datasets with a large number of features.
+                    Unlike standard SVC models that use kernels such as Radial Basis Function (RBF) or Polynomial,
+                    LinearSVC is built on the LIBLINEAR library, making it highly efficient for datasets with a large
+                    number of features.
 
-            </p>
+                </p>
 
-            <p>
+                <p>
 
-             This architecture allows efficient scaling in computational time and memory consumption, making LinearSVC suitable for large-scale problems.
+                    This architecture allows efficient scaling in computational time and memory consumption, making
+                    LinearSVC suitable for large-scale problems.
 
-            </p>
+                </p>
 
-        </div>
+            </div>
 
         </div>
 
@@ -148,51 +152,53 @@ body{
 
             <div class="card-custom">
 
-             <h5>Decision Hyperplane</h5>
+                <h5>Decision Hyperplane</h5>
 
-            <p>
+                <p>
 
-             The model searches for an optimal separating hyperplane in an N-dimensional space.
+                    The model searches for an optimal separating hyperplane in an N-dimensional space.
 
-            </p>
+                </p>
 
-            <div class="formula">
+                <div class="formula">
 
-             $$ w \cdot x + b = 0 $$
+                    $$ w \cdot x + b = 0 $$
 
-            </div>
+                </div>
 
-            <p>
+                <p>
 
-             Where:
+                    Where:
 
-            </p>
+                </p>
 
-            <ul>
+                <ul>
 
-                <li>w = weight vector</li>
+                    <li>w = weight vector</li>
 
-                <li>b = bias</li>
+                    <li>b = bias</li>
 
-                <li>x = input features</li>
+                    <li>x = input features</li>
 
-            </ul>
+                </ul>
 
-              <h5>Support Vectors</h5>
+                <h5>Support Vectors</h5>
 
-            <p>
+                <p>
 
-             Support vectors are the closest points to the hyperplane. These points define the position of the boundary.
+                    Support vectors are the closest points to the hyperplane. These points define the position of the
+                    boundary.
 
-            </p>
+                </p>
 
-             <h5>Margin Maximization</h5>
+                <h5>Margin Maximization</h5>
 
-            <p>
+                <p>
 
-             LinearSVC maximizes the margin between classes, improving generalization and reducing classification errors.
+                    LinearSVC maximizes the margin between classes, improving generalization and reducing classification
+                    errors.
 
-             </p>
+                </p>
 
             </div>
 
@@ -208,39 +214,40 @@ body{
 
             <div class="card-custom">
 
-             <h5>L2 Regularization</h5>
+                <h5>L2 Regularization</h5>
 
-            <p>
+                <p>
 
-             Applies Euclidean norm penalty to weights to prevent any feature from dominating the model.
+                    Applies Euclidean norm penalty to weights to prevent any feature from dominating the model.
 
-            </p>
+                </p>
 
-            <h5>Parameter C</h5>
+                <h5>Parameter C</h5>
 
-            <div class="box">
+                <div class="box">
 
-             Low C → wider margin → better generalization
-            <br><br>
-             High C → narrow margin → higher training accuracy
+                    Low C → wider margin → better generalization
+                    <br><br>
+                    High C → narrow margin → higher training accuracy
 
-            </div>
+                </div>
 
-             <h5>Squared Hinge Loss</h5>
+                <h5>Squared Hinge Loss</h5>
 
-            <p>
+                <p>
 
-             LinearSVC minimizes squared hinge loss to improve optimization speed and convergence.
+                    LinearSVC minimizes squared hinge loss to improve optimization speed and convergence.
 
-            </p>
+                </p>
 
-             <h5>One-vs-Rest Strategy</h5>
+                <h5>One-vs-Rest Strategy</h5>
 
-            <p>
+                <p>
 
-             For multi-class classification, the algorithm trains multiple binary classifiers and selects the most confident prediction.
+                    For multi-class classification, the algorithm trains multiple binary classifiers and selects the
+                    most confident prediction.
 
-            </p>
+                </p>
 
             </div>
 
@@ -256,43 +263,43 @@ body{
 
             <div class="card-custom">
 
-            <ul>
+                <ul>
 
-            <li>Linear scalability for large datasets</li>
+                    <li>Linear scalability for large datasets</li>
 
-            <li>Efficient performance in high-dimensional spaces</li>
+                    <li>Efficient performance in high-dimensional spaces</li>
 
-            <li>Convex optimization ensures global optimal solution</li>
+                    <li>Convex optimization ensures global optimal solution</li>
 
-            <li>Faster training compared to non-linear SVM models</li>
+                    <li>Faster training compared to non-linear SVM models</li>
 
-            </ul>
-
-            </div>
+                </ul>
 
             </div>
 
+        </div>
 
 
-            <!-- 5 -->
 
-            <div class="section">
+        <!-- 5 -->
 
-             <h3 class="title">5. Limitations</h3>
+        <div class="section">
+
+            <h3 class="title">5. Limitations</h3>
 
             <div class="card-custom">
 
-            <ul>
+                <ul>
 
-                <li>Cannot model non-linear relationships directly</li>
+                    <li>Cannot model non-linear relationships directly</li>
 
-                <li>Sensitive to extreme outliers</li>
+                    <li>Sensitive to extreme outliers</li>
 
-                <li>Does not provide probability outputs natively</li>
+                    <li>Does not provide probability outputs natively</li>
 
-                <li>Requires feature engineering for complex datasets</li>
+                    <li>Requires feature engineering for complex datasets</li>
 
-            </ul>
+                </ul>
 
             </div>
 
@@ -302,35 +309,35 @@ body{
 
         <!-- 6 -->
 
-            <div class="section">
+        <div class="section">
 
             <h3 class="title">6. Applicable Classification Problems</h3>
 
             <div class="card-custom">
 
-            <ul>
+                <ul>
 
-                <li>Document classification</li>
+                    <li>Document classification</li>
 
-                <li>Natural Language Processing</li>
+                    <li>Natural Language Processing</li>
 
-                <li>Sentiment analysis</li>
+                    <li>Sentiment analysis</li>
 
-                <li>Network intrusion detection</li>
+                    <li>Network intrusion detection</li>
 
-                <li>Bioinformatics classification</li>
+                    <li>Bioinformatics classification</li>
 
-            </ul>
+                </ul>
 
-            <p>
+                <p>
 
-            LinearSVC performs well when datasets contain many features but still allow linear separation.
+                    LinearSVC performs well when datasets contain many features but still allow linear separation.
 
-            </p>
-            <img src="{{ url_for('static', filename='images/image28.png') }}" class="img-fluid rounded shadow"
-                                style="max-width: 450px;">
+                </p>
+                <img src="{{ url_for('static', filename='images/image28.png') }}" class="img-fluid rounded shadow"
+                    style="max-width: 450px;">
 
-        </div>
+            </div>
 
         </div>
 
@@ -344,41 +351,43 @@ body{
 
             <div class="card-custom">
 
-             <h5>Medical Imaging Diagnosis</h5>
+                <h5>Medical Imaging Diagnosis</h5>
 
-            <p>
+                <p>
 
-             LinearSVC can classify medical conditions such as diabetic retinopathy using extracted numerical features from medical images.
+                    LinearSVC can classify medical conditions such as diabetic retinopathy using extracted numerical
+                    features from medical images.
 
-            </p>
+                </p>
 
-            <div class="highlight">
+                <div class="highlight">
 
-             Features may include:
+                    Features may include:
 
-            <ul>
+                    <ul>
 
-                <li>Microaneurysm count</li>
+                        <li>Microaneurysm count</li>
 
-                <li>Exudate density</li>
+                        <li>Exudate density</li>
 
-                <li>Blood vessel diameter</li>
+                        <li>Blood vessel diameter</li>
 
-            </ul>
+                    </ul>
 
-            </div>
+                </div>
 
-            <p>
+                <p>
 
-             The model determines whether an eye is healthy or affected based on its position relative to the decision hyperplane.
+                    The model determines whether an eye is healthy or affected based on its position relative to the
+                    decision hyperplane.
 
-            </p>
+                </p>
 
-            <p>
+                <p>
 
-             Doctors can interpret the model weights to understand which features influenced the diagnosis most.
+                    Doctors can interpret the model weights to understand which features influenced the diagnosis most.
 
-            </p>
+                </p>
 
             </div>
 
@@ -387,6 +396,7 @@ body{
 
 
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>git
 
 </body>
 

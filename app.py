@@ -40,6 +40,7 @@ def concepts_Sup():
     return render_template('concepts_Sup.html')
 
 
+
 @app.route('/application_linear', methods=["GET","POST"])
 def application_linear():
 
