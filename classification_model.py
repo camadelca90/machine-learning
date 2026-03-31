@@ -12,23 +12,38 @@ from sklearn.metrics import (
     roc_curve
 )
 
-# Load dataset and train model once
+
 df = pd.read_csv("linearsvc_customer_purchase_dataset.csv")
 
-X = df.drop("purchase_label", axis=1)
+
+X = df[[
+    "age",
+    "monthly_income_usd",
+    "website_visits_30d",
+    "avg_session_minutes",
+    "products_viewed",
+    "cart_additions",
+    "previous_purchases",
+    "discount_clicks_30d",
+    "days_since_last_purchase",
+    "support_tickets_6m",
+    "email_open_rate_pct",
+    "mobile_user",
+    "premium_member"
+]]
+
 y = df["purchase_label"]
+
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
 
+
 model = LinearSVC()
 model.fit(X_train, y_train)
 
 
-# ===============================
-# FUNCTION 1: Get metrics
-# ===============================
 def get_model_metrics():
     y_pred = model.predict(X_test)
 
@@ -52,11 +67,7 @@ def get_model_metrics():
     }
 
 
-# ===============================
-# FUNCTION 2: Make prediction
-# ===============================
 def predict_customer(data):
-
     input_data = [[
         data["age"],
         data["monthly_income_usd"],
@@ -81,11 +92,7 @@ def predict_customer(data):
         return "Low probability of purchase"
 
 
-# ===============================
-# FUNCTION 3: Generate confusion matrix plot
-# ===============================
 def generate_confusion_matrix_plot():
-
     y_pred = model.predict(X_test)
     cm = confusion_matrix(y_test, y_pred)
 
@@ -109,11 +116,7 @@ def generate_confusion_matrix_plot():
     plt.close()
 
 
-# ===============================
-# FUNCTION 4: Generate ROC curve plot
-# ===============================
 def generate_roc_curve_plot():
-
     y_scores = model.decision_function(X_test)
     fpr, tpr, _ = roc_curve(y_test, y_scores)
     roc_auc = roc_auc_score(y_test, y_scores)

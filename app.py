@@ -78,24 +78,27 @@ def application_business():
     metrics = classification_model.get_model_metrics()
 
     if request.method == "POST":
+        try:
+            data = {
+                "age": float(request.form["age"]),
+                "monthly_income_usd": float(request.form["income"]),
+                "website_visits_30d": float(request.form["visits"]),
+                "avg_session_minutes": float(request.form["session"]),
+                "products_viewed": float(request.form["products"]),
+                "cart_additions": float(request.form["cart"]),
+                "previous_purchases": float(request.form["previous"]),
+                "discount_clicks_30d": float(request.form["discount"]),
+                "days_since_last_purchase": float(request.form["days"]),
+                "support_tickets_6m": float(request.form["tickets"]),
+                "email_open_rate_pct": float(request.form["email"]),
+                "mobile_user": float(request.form["mobile"]),
+                "premium_member": float(request.form["premium"])
+            }
 
-        data = {
-            "age": float(request.form["age"]),
-            "monthly_income_usd": float(request.form["income"]),
-            "website_visits_30d": float(request.form["visits"]),
-            "avg_session_minutes": float(request.form["session"]),
-            "products_viewed": float(request.form["products"]),
-            "cart_additions": float(request.form["cart"]),
-            "previous_purchases": float(request.form["previous"]),
-            "discount_clicks_30d": float(request.form["discount"]),
-            "days_since_last_purchase": float(request.form["days"]),
-            "support_tickets_6m": float(request.form["tickets"]),
-            "email_open_rate_pct": float(request.form["email"]),
-            "mobile_user": float(request.form["mobile"]),
-            "premium_member": float(request.form["premium"])
-        }
+            result = classification_model.predict_customer(data)
 
-        result = classification_model.predict_customer(data)
+        except Exception as e:
+            result = f"Error: {e}"
 
     return render_template(
         'application_business.html',
