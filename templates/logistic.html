@@ -1,26 +1,556 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Regresión Logística</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Logistic Regression Application</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f7fa;
+        }
+
+        .section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        p {
+            color: #555;
+            line-height: 1.7;
+        }
+
+        .result-box {
+            background: #eef4ff;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 22px;
+            text-align: center;
+            font-weight: 600;
+        }
+    </style>
+
 </head>
+
 <body>
-{% include 'bar.html' %}
-<h2>Predicción de Compra</h2>
+    {% include 'bar.html' %}
 
-<form method="POST">
-    Edad: <input type="number" name="edad"><br>
-    Ingreso: <input type="number" name="ingreso"><br>
-    Visitas Web: <input type="number" name="visitas"><br>
-    Tiempo en sitio: <input type="number" name="tiempo"><br>
-    Compras previas: <input type="number" name="compras"><br>
-    Descuento usado (0 o 1): <input type="number" name="descuento"><br><br>
+    <div class="container mt-4">
 
-    <button type="submit">Predecir</button>
-</form>
+        <h1 class="text-center mb-4">Logistic Regression Application</h1>
 
-{% if result %}
-    <h3>Resultado: {{ result }}</h3>
-{% endif %}
+
+        <div class="section">
+
+            <h2>1. Problem Description</h2>
+
+            <p>
+
+                The objective of this project is to predict whether a student will pass or fail a subject based on
+                academic and behavioral variables. Educational institutions often need tools to identify students at
+                risk of failing in order to provide timely support such as tutoring or academic guidance.
+
+            </p>
+
+            <p>
+
+                Logistic Regression is used because the dependent variable has only two possible outcomes: Pass or Fail.
+                The model estimates the probability that a student will pass according to study habits, attendance
+                level, academic background and lifestyle characteristics.
+
+            </p>
+
+            <p>
+
+                By analyzing these variables, the system helps detect patterns that influence student performance and
+                supports decision making in education.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="section">
+
+            <h2>2. Dataset Explanation</h2>
+
+            <p>
+
+                The dataset contains student information that can influence academic performance. Each row represents a
+                student and each column represents a characteristic related to academic behavior or lifestyle.
+
+            </p>
+
+            <p>
+
+                The dataset includes numerical variables that allow the Logistic Regression algorithm to identify
+                relationships between study habits and academic results.
+
+            </p>
+
+            <p>
+
+                The data helps answer important questions such as:
+
+            </p>
+
+            <ul>
+
+                <li>Does studying more hours increase the probability of passing?</li>
+
+                <li>Does attendance affect performance?</li>
+
+                <li>Do completed assignments improve grades?</li>
+
+                <li>Does sleep influence academic success?</li>
+
+            </ul>
+
+        </div>
+
+
+
+        <div class="section">
+
+            <h2>3. Input Variables and Target Variable</h2>
+
+            <table class="table table-bordered">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Variable</th>
+                        <th>Description</th>
+                        <th>Type</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Hours_Studied</td>
+                        <td>Number of hours the student studies</td>
+                        <td>Input</td>
+                    </tr>
+
+                    <tr>
+                        <td>Attendance_%</td>
+                        <td>Percentage of classes attended</td>
+                        <td>Input</td>
+                    </tr>
+
+                    <tr>
+                        <td>Assignments_Completed</td>
+                        <td>Number of assignments completed</td>
+                        <td>Input</td>
+                    </tr>
+
+                    <tr>
+                        <td>Previous_Grade</td>
+                        <td>Previous academic grade</td>
+                        <td>Input</td>
+                    </tr>
+
+                    <tr>
+                        <td>Sleep_Hours</td>
+                        <td>Average hours of sleep</td>
+                        <td>Input</td>
+                    </tr>
+
+                    <tr>
+                        <td>Result</td>
+                        <td>Final result: Pass or Fail</td>
+                        <td>Target</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+            <p>
+
+                The independent variables represent factors that influence academic performance, while the dependent
+                variable represents the final prediction.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="section">
+
+            <h2>4. Data Preparation</h2>
+
+            <p>
+
+                Before training the model, the dataset was prepared to ensure accuracy and reliability.
+
+            </p>
+
+            <ul>
+
+                <li>Checking for missing or incorrect values</li>
+
+                <li>Converting categorical values into numeric values (Pass = 1, Fail = 0)</li>
+
+                <li>Selecting relevant variables for prediction</li>
+
+                <li>Splitting the dataset into training and testing data</li>
+
+                <li>Ensuring consistent data formatting</li>
+
+            </ul>
+
+            <p>
+
+                Data preparation is important because machine learning models require clean and structured data in order
+                to learn patterns effectively.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="section">
+
+            <h2>5. Model Training Process</h2>
+
+            <p>
+
+                Logistic Regression is a supervised learning algorithm used for classification problems. The model
+                learns from historical student data and estimates the probability of passing the subject.
+
+            </p>
+
+            <p>
+
+                The algorithm assigns weights to each variable, representing the importance of each factor in predicting
+                academic success.
+
+            </p>
+
+            <p>
+
+                For example:
+
+            </p>
+
+            <ul>
+
+                <li>More study hours usually increase the probability of passing</li>
+
+                <li>Higher attendance improves understanding of topics</li>
+
+                <li>Completing assignments reinforces learning</li>
+
+                <li>Previous grades indicate academic consistency</li>
+
+                <li>Sleep affects concentration and cognitive ability</li>
+
+            </ul>
+
+            <p>
+
+                The model adjusts its parameters to minimize prediction error and improve accuracy.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="section">
+
+            <h2>6. Prediction Form</h2>
+
+            <p>
+
+                Enter student information to predict whether the student will pass or fail the subject.
+
+            </p>
+
+            <form method="POST">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Hours Studied</label>
+
+                        <input type="number" step="any" name="hours" class="form-control" required>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Attendance %</label>
+
+                        <input type="number" step="any" name="attendance" class="form-control" required>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Assignments Completed</label>
+
+                        <input type="number" step="any" name="assignments" class="form-control" required>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Previous Grade</label>
+
+                        <input type="number" step="any" name="grade" class="form-control" required>
+
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+
+                        <label>Sleep Hours</label>
+
+                        <input type="number" step="any" name="sleep" class="form-control" required>
+
+                    </div>
+
+                </div>
+
+                <button class="btn btn-primary">Predict Result</button>
+
+            </form>
+
+        </div>
+
+
+
+        <div class="section">
+
+            <h2>7. Prediction Result</h2>
+
+            <div class="result-box">
+
+                Prediction: {{ prediction }}
+
+            </div>
+
+        </div>
+
+
+
+        <div class="section">
+
+            <h2>8. Confusion Matrix</h2>
+
+            <p>
+
+                The confusion matrix compares predicted values with real values to evaluate model performance.
+
+            </p>
+
+            <p>
+
+                True Positive: correctly predicts pass
+                True Negative: correctly predicts fail
+                False Positive: predicts pass incorrectly
+                False Negative: predicts fail incorrectly
+
+            </p>
+
+            <img src="{{ url_for('static', filename='images/image29.png') }}" class="img-fluid rounded shadow"
+                style="max-width: 450px;">
+
+        </div>
+
+
+
+        <div class="section">
+
+            <h2>9. Accuracy</h2>
+
+            <p>
+
+                Accuracy measures how many predictions were correct compared to the total number of predictions.
+
+            </p>
+
+            <p>
+
+                A high accuracy value indicates good overall performance of the model.
+
+            </p>
+
+            <p>
+
+                Accuracy: {{ accuracy }}
+
+            </p>
+
+        </div>
+
+
+
+        <div class="section">
+
+            <h2>10. Precision</h2>
+
+            <p>
+
+                Precision measures how many predicted Pass cases are actually correct.
+
+            </p>
+
+            <p>
+
+                High precision means the model rarely makes incorrect positive predictions.
+
+            </p>
+
+            <p>
+
+                Precision: {{ precision }}
+
+            </p>
+
+        </div>
+
+
+
+        <div class="section">
+
+            <h2>11. Recall</h2>
+
+            <p>
+
+                Recall measures how many actual Pass cases are correctly detected by the model.
+
+            </p>
+
+            <p>
+
+                High recall means the model identifies most students who pass.
+
+            </p>
+
+            <p>
+
+                Recall: {{ recall }}
+
+            </p>
+
+        </div>
+
+
+
+        <div class="section">
+
+            <h2>12. F1 Score</h2>
+
+            <p>
+
+                F1 Score combines precision and recall into a single metric to evaluate model performance in a balanced
+                way.
+
+            </p>
+
+            <p>
+
+                F1 Score: {{ f1 }}
+
+            </p>
+
+        </div>
+
+
+
+        <div class="section">
+
+            <h2>13. ROC Curve and AUC</h2>
+
+            <p>
+
+                The ROC curve shows how well the model distinguishes between Pass and Fail classes.
+
+            </p>
+
+            <p>
+
+                AUC measures the quality of the model prediction. Values closer to 1 indicate better performance.
+
+            </p>
+
+            <p>
+
+                ROC AUC: {{ roc_auc }}
+
+            </p>
+
+            <img src="{{ url_for('static', filename='images/image30.png') }}" class="img-fluid rounded shadow"
+                style="max-width: 450px;">
+
+        </div>
+
+
+
+        <div class="section">
+
+            <h2>14. Interpretation of Results</h2>
+
+            <p>
+
+                The model demonstrates how academic habits influence student performance. Study hours, attendance,
+                completed assignments and previous grades strongly affect the probability of passing.
+
+            </p>
+
+            <p>
+
+                Students who dedicate more time to studying and maintain consistent academic behavior have a higher
+                probability of success.
+
+            </p>
+
+            <p>
+
+                This type of predictive model can help educational institutions identify students who need support and
+                improve learning outcomes.
+
+            </p>
+
+        </div>
+
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 
 </body>
+
 </html>

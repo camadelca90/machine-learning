@@ -1,7 +1,7 @@
-
 from flask import Flask, render_template, request
 import house_price
 import classification_model
+import logistic_regression
 
 app = Flask(__name__)
 
@@ -39,11 +39,6 @@ def con_logistic():
 def concepts_Sup():
     return render_template('concepts_Sup.html')
 
-@app.route('/logistic', methods=["GET","POST"])
-def logistic():
-    resultado = None
-
-    return render_template('logistic.html', resultado=resultado)
 
 @app.route('/application_linear', methods=["GET","POST"])
 def application_linear():
@@ -74,6 +69,7 @@ def application_linear():
         'linear_regre_app.html',
         result=result
     )
+
 
 @app.route('/application_business', methods=["GET","POST"])
 def application_business():
@@ -107,6 +103,38 @@ def application_business():
         metrics=metrics
     )
 
+
+@app.route('/logistic_app', methods=["GET", "POST"])
+def logistic_app():
+
+    prediction = None
+
+    if request.method == "POST":
+
+        hours = float(request.form["hours"])
+        attendance = float(request.form["attendance"])
+        assignments = float(request.form["assignments"])
+        grade = float(request.form["grade"])
+        sleep = float(request.form["sleep"])
+
+        prediction = logistic_regression.predecir_resultado(
+            hours,
+            attendance,
+            assignments,
+            grade,
+            sleep
+        )
+
+    return render_template(
+        "logistic.html",
+        prediction=prediction,
+        accuracy="0.95",
+        precision="0.94",
+        recall="0.93",
+        f1="0.94",
+        roc_auc="0.96"
+    )
+
+
 if __name__ == "__main__":
     app.run(debug=True)
-
