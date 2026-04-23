@@ -9,6 +9,7 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
+
 @app.route('/case1')
 def case1():
     return render_template('case1.html')
