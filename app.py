@@ -40,6 +40,9 @@ def con_logistic():
 def concepts_Sup():
     return render_template('concepts_Sup.html')
 
+@app.route('/unsupervised_concepts')
+def unsupervised_concepts():
+    return render_template('/unsu_concepts.html')
 
 
 @app.route('/application_linear', methods=["GET","POST"])

@@ -9,11 +9,13 @@
         <div class="collapse navbar-collapse" id="menu">
 
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                <!-- Home -->
                 <li class="nav-item">
                     <a class="nav-link active" href="{{ url_for('home') }}">Home</a>
                 </li>
 
-                
+                <!-- ML Use Cases -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
                         ML Use Cases
@@ -26,13 +28,14 @@
                     </ul>
                 </li>
 
-
+                <!-- Supervised ML -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
                         Supervised Machine Learning
                     </a>
                     <ul class="dropdown-menu">
-                        <!-- Regression -->
+
+                        <!-- Linear Regression -->
                         <li class="dropdown-submenu">
                             <a class="dropdown-item dropdown-toggle" href="#">
                                 Linear Regression
@@ -42,7 +45,8 @@
                                 <li><a class="dropdown-item" href="/application_linear">Application Business</a></li>
                             </ul>
                         </li>
-                        
+
+                        <!-- Logistic Regression -->
                         <li class="dropdown-submenu">
                             <a class="dropdown-item dropdown-toggle" href="#">
                                 Logistic Regression
@@ -52,7 +56,8 @@
                                 <li><a class="dropdown-item" href="/logistic_app">Application Business</a></li>
                             </ul>
                         </li>
-                      
+
+                        <!-- Classification -->
                         <li class="dropdown-submenu">
                             <a class="dropdown-item dropdown-toggle" href="#">
                                 Assigned Classification Model
@@ -62,12 +67,43 @@
                                 <li><a class="dropdown-item" href="/application_business">Application Business</a></li>
                             </ul>
                         </li>
+
                     </ul>
                 </li>
+
+                <!--  Unsupervised ML -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        Unsupervised Machine Learning
+                    </a>
+                    <ul class="dropdown-menu">
+
+                        <li>
+                            <a class="dropdown-item" href="/unsupervised_concepts">
+                                Basic Concepts
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="/kmeans_manual">
+                                K-Means Manual Exercise
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="/kmeans_app">
+                                Clustering Application
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
             </ul>
         </div>
     </div>
 </nav>
+
 
 <style>
     

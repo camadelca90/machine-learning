@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Means Clustering | Unsupervised Learning Research</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            scroll-behavior: smooth;
+            /* TAMAÑO BASE DE FUENTE - AUMENTADO */
+            font-size: 1.05rem;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+        .hero-section {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 2rem 0;
+            border-radius: 0 0 15px 15px;
+            margin-bottom: 1.8rem;
+        }
+        .hero-section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+            border: none;
+            border-radius: 14px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+        .card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+        }
+        .section-title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #0d6efd, #0dcaf0);
+            border-radius: 2px;
+        }
+        .badge-custom {
+            background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .table-custom {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        .table-custom thead {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+        }
+        footer {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 1.8rem 0;
+            margin-top: 2rem;
+        }
+        .math {
+            background-color: #f8f9fa;
+            padding: 14px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            text-align: center;
+            border-left: 4px solid #0d6efd;
+        }
+        .cluster-box {
+            text-align: center;
+            padding: 18px;
+            border-radius: 14px;
+            background: white;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        .cluster-box:hover {
+            transform: scale(1.02);
+        }
+        .cluster-icon {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        code {
+            background-color: #f1f3f5;
+            padding: 3px 6px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        .concept-deep {
+            background: #f0f7ff;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 5px solid #0d6efd;
+        }
+        .glow-text {
+            font-weight: 600;
+            color: #0a58ca;
+        }
+        
+      
+        p, li, .small-text, .alert, .table td, .table th, .cluster-box p, .cluster-box small, .concept-deep, .bg-light p, .bg-light li {
+            font-size: 1rem;
+        }
+        h5 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        h6 {
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+        .alert {
+            padding: 0.8rem 1.2rem;
+            font-size: 0.95rem;
+        }
+        .btn-sm-custom {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.85rem;
+        }
+        .card-body {
+            padding: 1.5rem !important;
+        }
+        .table td, .table th {
+            padding: 0.8rem;
+            font-size: 0.95rem;
+        }
+        .small, .text-small {
+            font-size: 0.9rem;
+        }
+        .bg-light p, .bg-light ul, .bg-light li {
+            font-size: 0.95rem;
+        }
+        .math strong, .math {
+            font-size: 1rem;
+        }
+        .cluster-box h6 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+  {% include 'bar.html' %}
+  
+<section class="hero-section">
+    <div class="container text-center">
+        <h2 class="fw-bold">Unsupervised Learning & K-Means Clustering</h2>
+    </div>
+</section>
+
+<div class="container">
+
+    <!-- 1. UNSUPERVISED LEARNING -->
+    <section id="unsupervised" class="mb-4">
+        <div class="card card-hover">
+            <div class="card-body">
+                <h3 class="section-title"><i class="fas fa-brain text-primary me-2"></i>1. What is Unsupervised Learning?</h3>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <p><strong>Definition:</strong> Unsupervised learning extracts patterns from data <strong>without labeled responses</strong>. The algorithm discovers hidden insights autonomously.</p>
+                        <p>Unlike supervised learning (input-output pairs), unsupervised works with raw, unannotated data. Essential for exploratory analysis, dimension reduction, and clustering.</p>
+                        <div class="concept-deep">
+                            <i class="fas fa-lightbulb me-2 text-warning"></i> <strong class="glow-text">Fundamental principle:</strong> "Let the data speak for itself" — natural groupings emerge without answers.
+                        </div>
+                        <div class="alert alert-primary mt-2">
+                            <i class="fas fa-chart-pie me-2"></i> <strong>Fact:</strong> Over 80% of real-world data is unlabeled — critical for finance, healthcare, e-commerce.
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="math">
+                            <i class="fas fa-database fa-2x mb-2 d-block text-primary"></i>
+                            <strong>Unlabeled Data</strong><br>
+                            X = [x₁, x₂, ..., xₙ]<br>
+                            No target Y → Discover patterns!
+                        </div>
+                    </div>
+                </div>
+                
+                <h5 class="mt-3">Key Techniques</h5>
+                <div class="table-responsive">
+                    <table class="table table-custom table-bordered">
+                        <thead>
+                            <tr><th>Technique</th><th>Description</th><th>Applications</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Clustering</strong></td><td>Groups similar points</td><td>Segmentation, image groups</td></tr>
+                            <tr><td><strong>Dimensionality Reduction</strong></td><td>Reduces features, preserves variance</td><td>Visualization, noise filtering</td></tr>
+                            <tr><td><strong>Anomaly Detection</strong></td><td>Finds rare deviations</td><td>Fraud, intrusion detection</td></tr>
+                            <tr><td><strong>Association Rules</strong></td><td>Discovers relationships</td><td>Market basket analysis</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <div class="bg-light p-3 rounded">
+                            <h6><i class="fas fa-check-circle text-success me-2"></i>Unsupervised vs Supervised</h6>
+                            <ul class="mb-0">
+                                <li><strong>Unsupervised:</strong> No labels, exploratory, clustering</li>
+                                <li><strong>Supervised:</strong> Labeled, predictive, classification</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="bg-light p-3 rounded">
+                            <h6><i class="fas fa-chart-line text-info me-2"></i>When to Use</h6>
+                            <ul class="mb-0">
+                                <li>✓ Data has no labels</li>
+                                <li>✓ Explore hidden patterns</li>
+                                <li>✓ Preprocessing for supervised models</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. CLUSTERING -->
+    <section id="clustering" class="mb-4">
+        <div class="card card-hover">
+            <div class="card-body">
+                <h3 class="section-title"><i class="fas fa-object-group text-primary me-2"></i>2. What is Clustering?</h3>
+                <p><strong>Definition:</strong> Dividing data into <strong>clusters</strong> where intra-cluster similarity is high and inter-cluster similarity is low.</p>
+                
+                <div class="row mt-4 text-center">
+                    <div class="col-md-4">
+                        <i class="fas fa-check-circle fa-2x text-success"></i>
+                        <h6 class="mt-2">High Intra-Cluster</h6>
+                        <p>Points inside share strong characteristics</p>
+                    </div>
+                    <div class="col-md-4">
+                        <i class="fas fa-ban fa-2x text-danger"></i>
+                        <h6 class="mt-2">Low Inter-Cluster</h6>
+                        <p>Different clusters well separated</p>
+                    </div>
+                    <div class="col-md-4">
+                        <i class="fas fa-chart-bar fa-2x text-info"></i>
+                        <h6 class="mt-2">Interpretable</h6>
+                        <p>Actionable business insights</p>
+                    </div>
+                </div>
+
+                <h5 class="mt-4">Algorithm Types</h5>
+                <div class="table-responsive">
+                    <table class="table table-custom">
+                        <thead><tr><th>Type</th><th>Examples</th><th>Best for</th></tr></thead>
+                        <tbody>
+                            <td>Partition-based</td><td><code>K-Means, K-Medoids</code></td><td>Spherical, large data</td></tr>
+                            <td>Hierarchical</td><td><code>Agglomerative</code></td><td>Small data, unknown K</td></tr>
+                            <td>Density-based</td><td><code>DBSCAN, OPTICS</code></td><td>Arbitrary shapes, noise</td></tr>
+                            <td>Model-based</td><td><code>GMM</code></td><td>Ellipsoidal, soft assignments</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. K-MEANS -->
+    <section id="kmeans" class="mb-4">
+        <div class="card card-hover">
+            <div class="card-body">
+                <h3 class="section-title"><i class="fas fa-chart-pie text-primary me-2"></i>3. What is K-Means?</h3>
+                <div class="row">
+                    <div class="col-lg-7">
+                        <p><strong>Definition:</strong> Iterative centroid-based algorithm partitioning <strong>n</strong> points into <strong>K</strong> clusters. Each point belongs to the cluster with the nearest centroid.</p>
+                        <p><strong>"K"</strong> = number of clusters, <strong>"Means"</strong> = centroids as mean of points.</p>
+                        <div class="math">
+                            <strong>Objective: Minimize WCSS</strong><br>
+                            J = Σ<sub>j=1</sub><sup>K</sup> Σ<sub>xᵢ∈Sⱼ</sub> ||xᵢ - μⱼ||²
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="bg-light p-3 rounded">
+                            <h6><i class="fas fa-check text-success"></i> Why Popular</h6>
+                            <ul class="mb-0">
+                                <li>✓ Simple, easy to implement</li>
+                                <li>✓ Scales well O(n·K·iter)</li>
+                                <li>✓ Guaranteed convergence</li>
+                                <li>✓ Core for compression & quantization</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <h5 class="mt-4">Limitations</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul>
+                            <li>⚠️ Sensitive to initialization</li>
+                            <li>⚠️ Requires K in advance</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul>
+                            <li>⚠️ Assumes spherical clusters</li>
+                            <li>⚠️ Outlier sensitive</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. CENTROIDS -->
+    <section id="centroids" class="mb-4">
+        <div class="card card-hover">
+            <div class="card-body">
+                <h3 class="section-title"><i class="fas fa-location-dot text-primary me-2"></i>4. Centroids</h3>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p><strong>Definition:</strong> Geometric center of a cluster = multidimensional mean of all points in that cluster.</p>
+                        <div class="math">
+                            μ<sub>j</sub> = (1/|S<sub>j</sub>|) Σ<sub>xᵢ∈S<sub>j</sub></sub> xᵢ
+                        </div>
+                        <ul class="mt-3">
+                            <li>• Minimizes sum of squared distances</li>
+                            <li>• Moves iteratively during reassignment</li>
+                            <li>• Convergence when centroids stop moving</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="bg-light p-3 rounded">
+                            <h6><i class="fas fa-chart-line text-info"></i> Initialization Strategies</h6>
+                            <table class="table table-sm table-borderless">
+                                <tr><td><strong>Random</strong></td><td>Simple but poor local minima</td></tr>
+                                <tr><td><strong>K-Means++</strong></td><td>Spreads centroids → better quality</td></tr>
+                                <tr><td><strong>Manual</strong></td><td>Domain knowledge</td></tr>
+                            </table>
+                        </div>
+                        <div class="mt-3 text-center p-3" style="background:#e9f0fa; border-radius: 10px;">
+                            <strong>Example (2D):</strong> Points (2,3), (4,5), (6,7) → Centroid = (4,5)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. DISTANCE METRICS & EUCLIDEAN -->
+    <section id="distance" class="mb-4">
+        <div class="card card-hover">
+            <div class="card-body">
+                <h3 class="section-title"><i class="fas fa-ruler-combined text-primary me-2"></i>5. Distance Metrics & Euclidean</h3>
+                <div class="row">
+                    <div class="col-lg-7">
+                        <p><strong>Distance metric:</strong> Quantifies similarity between points. <strong>Euclidean distance</strong> = straight-line distance (Pythagorean).</p>
+                        <div class="math">
+                            d(p,q) = √[ Σ (pᵢ - qᵢ)² ]
+                        </div>
+                        <div class="math mt-2">
+                            <strong>Squared Euclidean (WCSS):</strong> Σ (pᵢ - qᵢ)²
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="bg-light p-3 rounded">
+                            <h6><i class="fas fa-check-circle text-success"></i> Euclidean Properties</h6>
+                            <ul>
+                                <li>Symmetry: d(p,q) = d(q,p)</li>
+                                <li>Positivity: ≥0, zero only if equal</li>
+                                <li>Triangle inequality</li>
+                            </ul>
+                            <hr>
+                            <p class="mb-0"><strong>Why Euclidean?</strong> The mean minimizes squared Euclidean distances.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h5 class="mt-4">Alternative Distance Metrics</h5>
+                <div class="table-responsive">
+                    <table class="table table-custom">
+                        <thead><tr><th>Metric</th><th>Formula</th><th>Best for</th></tr></thead>
+                        <tbody>
+                            <tr><td>Manhattan (L1)</td><td>Σ|pᵢ - qᵢ|</td><td>Grid-like spaces</td></tr>
+                            <tr><td>Cosine Similarity</td><td>1 - cos(θ)</td><td>Text, direction matters</td></tr>
+                            <tr><td>Minkowski</td><td>(Σ|Δ|ᵖ)¹/ᵖ</td><td>Generalized distance</td></tr>
+                            <tr><td>Mahalanobis</td><td>√[(p-q)ᵀ S⁻¹ (p-q)]</td><td>Correlated features</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. ITERATIVE PROCESS -->
+    <section id="iterative" class="mb-4">
+        <div class="card card-hover">
+            <div class="card-body">
+                <h3 class="section-title"><i class="fas fa-sync-alt text-primary me-2"></i>6. Iterative Process (Lloyd's Algorithm)</h3>
+                <p>K-Means alternates between assignment and update until convergence. Each iteration reduces WCSS.</p>
+                
+                <div class="row text-center mt-4">
+                    <div class="col-3">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 55px; height: 55px;"><span class="fw-bold h4 mb-0">1</span></div>
+                        <p class="mt-2 mb-0"><strong>Initialization</strong><br>K centroids</p>
+                    </div>
+                    <div class="col-3">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 55px; height: 55px;"><span class="fw-bold h4 mb-0">2</span></div>
+                        <p class="mt-2 mb-0"><strong>Assignment</strong><br>to nearest centroid</p>
+                    </div>
+                    <div class="col-3">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 55px; height: 55px;"><span class="fw-bold h4 mb-0">3</span></div>
+                        <p class="mt-2 mb-0"><strong>Update</strong><br>recompute means</p>
+                    </div>
+                    <div class="col-3">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 55px; height: 55px;"><span class="fw-bold h4 mb-0">4</span></div>
+                        <p class="mt-2 mb-0"><strong>Repeat</strong><br>until convergence</p>
+                    </div>
+                </div>
+
+                <div class="concept-deep mt-4">
+                    <strong>Mathematical guarantee:</strong> WCSS decreases monotonically → algorithm always converges (local optimum).
+                </div>
+
+                <h5 class="mt-4">Convergence Criteria</h5>
+                <div class="row mt-2">
+                    <div class="col-md-4"><div class="bg-light p-2 rounded text-center">Centroid movement &lt; ε</div></div>
+                    <div class="col-md-4"><div class="bg-light p-2 rounded text-center">No points change cluster</div></div>
+                    <div class="col-md-4"><div class="bg-light p-2 rounded text-center">Max iterations reached</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. VARIANCE & CONVERGENCE -->
+    <section id="variance" class="mb-4">
+        <div class="card card-hover">
+            <div class="card-body">
+                <h3 class="section-title"><i class="fas fa-chart-line text-primary me-2"></i>7. Variance & Convergence (WCSS)</h3>
+                <p><strong>WCSS</strong> = Within-Cluster Sum of Squares = total intra-cluster variance. The core objective K-Means minimizes.</p>
+                
+                <div class="math">
+                    WCSS = Σ<sub>j=1</sub><sup>K</sup> Σ<sub>xᵢ∈Cⱼ</sub> ||xᵢ - μⱼ||²
+                </div>
+                <p class="mt-3">Lower WCSS = tighter clusters. Use <strong>elbow method</strong> to choose optimal K.</p>
+
+                <div class="row mt-4">
+                    <div class="col-lg-6">
+                        <canvas id="wcssChart" height="220"></canvas>
+                        <p class="text-center mt-2">WCSS decreases across iterations</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <canvas id="elbowChart" height="220"></canvas>
+                        <p class="text-center mt-2">Elbow at K=3 → optimal clusters</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. REAL-WORLD APPLICATIONS -->
+    <section id="applications" class="mb-4">
+        <div class="card card-hover">
+            <div class="card-body">
+                <h3 class="section-title"><i class="fas fa-building text-primary me-2"></i>8. Real-World Applications</h3>
+                
+                <div class="row g-3">
+                    <div class="col-md-4 col-6">
+                        <div class="cluster-box">
+                            <i class="fas fa-chart-line cluster-icon text-primary"></i>
+                            <h6>Marketing</h6>
+                            <p>Customer segmentation, targeted campaigns</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-6">
+                        <div class="cluster-box">
+                            <i class="fas fa-chart-pie cluster-icon text-success"></i>
+                            <h6>Finance & Banking</h6>
+                            <p>Fraud detection, risk profiling, credit scoring</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-6">
+                        <div class="cluster-box">
+                            <i class="fas fa-heartbeat cluster-icon text-danger"></i>
+                            <h6>Healthcare</h6>
+                            <p>Medical imaging, genomics, patient stratification</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-6">
+                        <div class="cluster-box">
+                            <i class="fas fa-shopping-cart cluster-icon text-warning"></i>
+                            <h6>E-commerce</h6>
+                            <p>Recommendations, image compression, document clustering</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-6">
+                        <div class="cluster-box">
+                            <i class="fas fa-car cluster-icon text-info"></i>
+                            <h6>Autonomous Systems</h6>
+                            <p>Robotics, navigation, obstacle detection</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-6">
+                        <div class="cluster-box">
+                            <i class="fas fa-globe cluster-icon text-secondary"></i>
+                            <h6>Environmental Science</h6>
+                            <p>Climate patterns, ecology, pollution analysis</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-primary mt-4">
+                    <i class="fas fa-shield-alt me-2"></i> <strong>Privacy-Preserving Analytics:</strong> Clustering enables group insights without individual IDs.
+                </div>
+                <div class="alert alert-secondary">
+                    <i class="fas fa-industry me-2"></i> <strong>Real-world examples:</strong> Netflix recommendations, Amazon "customers who bought this also bought", Spotify playlist discovery.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Summary Table -->
+    <section class="mb-4">
+        <div class="card card-hover bg-dark text-white">
+            <div class="card-body p-4">
+                <h5 class="mb-3 text-center"><i class="fas fa-table me-2"></i> Complete Concept Summary</h5>
+                <div class="table-responsive">
+                    <table class="table table-dark">
+                        <thead>
+                            <tr><th>Concept</th><th>Definition</th><th>Role in K-Means</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Unsupervised Learning</td><td>No labels, find patterns</td><td>Framework</td></tr>
+                            <tr><td>Clustering</td><td>Group similar points</td><td>Overall objective</td></tr>
+                            <tr><td>Centroid</td><td>Mean of cluster points</td><td>Cluster center</td></tr>
+                            <tr><td>Euclidean Distance</td><td>Straight-line distance</td><td>Assignment criterion</td></tr>
+                            <tr><td>Iterative Process</td><td>Assign → Update → Repeat</td><td>Optimization mechanism</td></tr>
+                            <tr><td>WCSS (Variance)</td><td>Σ ||x - μ||²</td><td>Minimization target</td></tr>
+                            <tr><td>Convergence</td><td>Stable centroids / assignments</td><td>Stopping condition</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<footer>
+    <div class="container text-center">
+        <p class="mb-0"><i class="fas fa-chart-line me-2"></i> Jendy, Anamaria, Carlos</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // WCSS Evolution Chart
+    const ctx1 = document.getElementById('wcssChart').getContext('2d');
+    new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: ['Iter 1', 'Iter 2', 'Iter 3', 'Iter 4', 'Iter 5'],
+            datasets: [{
+                label: 'WCSS (inertia)',
+                data: [1250, 480, 340, 295, 291],
+                borderColor: '#0d6efd',
+                backgroundColor: 'rgba(13,110,253,0.1)',
+                borderWidth: 2,
+                pointRadius: 5,
+                pointBackgroundColor: '#0d6efd',
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: { legend: { position: 'top', labels: { font: { size: 11 } } } },
+            scales: { y: { title: { display: true, text: 'WCSS', font: { size: 11 } } } }
+        }
+    });
+
+    // Elbow Method Chart
+    const ctx2 = document.getElementById('elbowChart').getContext('2d');
+    new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: ['1','2','3','4','5','6','7','8','9','10'],
+            datasets: [{
+                label: 'WCSS',
+                data: [1850, 820, 450, 380, 335, 310, 295, 285, 278, 274],
+                borderColor: '#dc3545',
+                backgroundColor: 'rgba(220,53,69,0.1)',
+                borderWidth: 2,
+                pointRadius: 4,
+                pointBackgroundColor: '#dc3545',
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: { legend: { position: 'top', labels: { font: { size: 11 } } } },
+            scales: { y: { title: { display: true, text: 'WCSS', font: { size: 11 } } } }
+        }
+    });
+</script>
+</body>
+</html>
