@@ -44,7 +44,10 @@ def concepts_Sup():
 def unsupervised_concepts():
     return render_template('/unsu_concepts.html')
 
-
+@app.route('/Manual_exercise')
+def Manual_exercise():
+    return render_template('/Manual_exercise.html')
+    
 @app.route('/application_linear', methods=["GET","POST"])
 def application_linear():
 

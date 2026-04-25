@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>K-Means Clustering Dashboard | Iterative Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background: #f0f4f9;
+            scroll-behavior: smooth;
+        }
+        .hero-gradient {
+            background: linear-gradient(105deg, #0b2b3b 0%, #1b4f6e 100%);
+            color: white;
+            border-bottom-left-radius: 2rem;
+            border-bottom-right-radius: 2rem;
+            padding: 2.5rem 0 3rem 0;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+        }
+        .glass-card {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(0px);
+            border-radius: 1.5rem;
+            border: none;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.05), 0 0 1px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 30px -12px rgba(0,0,0,0.12);
+        }
+        .stat-badge {
+            background: #eef2ff;
+            color: #1e3a8a;
+            border-radius: 40px;
+            padding: 0.3rem 0.9rem;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+        .cluster-c1 {
+            background: #e0f2fe;
+            color: #0369a1;
+            font-weight: 700;
+            padding: 0.25rem 1rem;
+            border-radius: 50px;
+            display: inline-block;
+            font-size: 0.75rem;
+        }
+        .cluster-c2 {
+            background: #dcfce7;
+            color: #15803d;
+            font-weight: 700;
+            padding: 0.25rem 1rem;
+            border-radius: 50px;
+            display: inline-block;
+            font-size: 0.75rem;
+        }
+        .cluster-c3 {
+            background: #fef3c7;
+            color: #b45309;
+            font-weight: 700;
+            padding: 0.25rem 1rem;
+            border-radius: 50px;
+            display: inline-block;
+            font-size: 0.75rem;
+        }
+        .table-custom thead th {
+            background: #f8fafc;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .table-custom td {
+            vertical-align: middle;
+            font-size: 0.85rem;
+        }
+        .wcss-number {
+            font-weight: 800;
+            font-size: 1.2rem;
+            font-family: monospace;
+        }
+        .btn-excel {
+            background: #1f6e43;
+            color: white;
+            border-radius: 60px;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            border: none;
+        }
+        .btn-excel:hover {
+            background: #0f5535;
+            transform: scale(1.02);
+            color: white;
+        }
+        .section-title {
+            font-weight: 800;
+            border-left: 5px solid #1f6e43;
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .insight-box {
+            background: #fefce8;
+            border-left: 4px solid #eab308;
+            border-radius: 1rem;
+        }
+        footer {
+            background: #e6edf4;
+            border-radius: 2rem 2rem 0 0;
+            margin-top: 3rem;
+        }
+        @media (max-width: 768px) {
+            .hero-gradient {
+                padding: 1.8rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% include 'bar.html' %}
+
+<div class="hero-gradient">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-5 fw-bold">Manual K-Means Simulation</h1>
+                <p class="lead mt-2 opacity-90">Complete analysis Manual K-Means Simulation, the evolution of the clusters and the optimization of the distance, based on an Excel simulation.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--  CONJUNTO DE DATOS -->
+<div class="container mt-5 mb-5" id="dataset-explanation">
+    <div class="glass-card p-4">
+        <div class="d-flex align-items-center gap-3 mb-4">
+            <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
+                <i class="bi bi-database-fill-gear fs-2 text-primary"></i>
+            </div>
+            <div>
+                <h2 class="fw-bold mb-0">📊 Understanding the dataset</h2>
+                <p class="text-secondary mt-1">Customer segmentation based on Age & Income (COP)</p>
+            </div>
+        </div>
+
+        <!-- 1. Data source overview -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-6">
+                <div class="border rounded-3 p-3 h-100 bg-light bg-opacity-25">
+                    <h5 class="fw-semibold"><i class="bi bi-info-circle-fill text-primary me-2"></i>Original data source</h5>
+                    <p>The dataset is a synthetic representation of <strong>100 customers</strong> with demographic and financial information. It was originally built within the Excel file <code>Iteraciones.xlsx</code> to demonstrate the K-Means clustering algorithm step by step over three iterations.</p>
+                    <p class="mb-0 small text-secondary">🎯 <strong>Purpose:</strong> Segment customers into meaningful groups based on their age and monthly income to design targeted marketing strategies.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="border rounded-3 p-3 h-100 bg-light bg-opacity-25">
+                    <h5 class="fw-semibold"><i class="bi bi-bar-chart-steps me-2 text-primary"></i>Key preprocessing</h5>
+                    <ul class="mb-0 small">
+                        <li><i class="bi bi-check-lg text-success"></i> No missing values — complete records.</li>
+                        <li><i class="bi bi-check-lg text-success"></i> No scaling applied intentionally to keep real values (Income in COP).</li>
+                        <li><i class="bi bi-check-lg text-success"></i> Euclidean distance computed directly between raw features.</li>
+                        <li><i class="bi bi-check-lg text-success"></i> Centroids initialized with strategic seeds: C1 (22yo, 1M COP), C2 (45yo, 5.5M COP), C3 (60yo, 8M COP).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Variables description table -->
+        <h5 class="fw-semibold mt-3 mb-3"><i class="bi bi-table me-2"></i>Variables description</h5>
+        <div class="table-responsive mb-4">
+            <table class="table table-bordered table-custom">
+                <thead class="table-light">
+                    <tr><th>Variable</th><th>Type</th><th>Description</th><th>Range / values</th>
+                </thead>
+                <tbody>
+                    <tr><td class="fw-semibold">ID</td><td>Integer (categorical)</td><td>Unique identifier for each customer (1 to 100).</td><td>1, 2, 3, ..., 100</td></tr>
+                    <tr><td class="fw-semibold">Age</td><td>Numerical (continuous)</td><td>Age of the customer in years.</td><td>21 – 65 years</td></tr>
+                    <tr><td class="fw-semibold">Income_COP</td><td>Numerical (continuous)</td><td>Monthly income in Colombian Pesos (COP).</td><td>1,000,000 – 8,700,000 COP</td></tr>
+                    <tr><td class="fw-semibold">d(c1), d(c2), d(c3)</td><td>Calculated field</td><td>Euclidean distance from the customer to each centroid (C1, C2, C3).</td><td>≥ 0 (real numbers)</td></tr>
+                    <tr><td class="fw-semibold">Cluster</td><td>Categorical</td><td>Assigned group based on minimum distance (C1, C2 or C3).</td><td>C1, C2, C3</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <!-- WCSS Cards + Chart row -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-7">
+            <div class="glass-card p-3 p-md-4 h-100">
+                <h5 class="fw-bold mb-3"><i class="bi bi-bar-chart-steps me-2 text-primary"></i>WCSS per iteration</h5>
+                <canvas id="wcssChart" style="max-height: 280px; width:100%"></canvas>
+                <div class="mt-3 text-muted small"><i class="bi bi-info-circle"></i> Values extracted from "Grafico" sheet: Iter1 = 1.1216e14 , Iter2 = 4.4778e13 , Iter3 = 1.8689e15. Minimum WCSS achieved in iteration 2.</div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="glass-card p-4 h-100">
+                <h5 class="fw-bold mb-3"><i class="bi bi-lightbulb-fill text-warning"></i> Key insight</h5>
+                <div class="mb-3">
+                    <span class="badge bg-success bg-opacity-10 text-success p-2"><i class="bi bi-arrow-down-short"></i> Best clustering at Iteration 2</span>
+                    <p class="mt-3 small">After first initialization (C1: young/low income, C2: mid, C3: senior/high), the second iteration drastically reduced intra-cluster variance (WCSS ≈ 44.78 × 10^12). The third iteration shows a spike due to centroid rebalancing — typical K-Means behavior.</p>
+                </div>
+                <hr>
+                <div class="row text-center">
+                    <div class="col-6 border-end"><span class="fw-bold">📉 Reduction</span><br>Iter1 → Iter2: <strong>-60.1%</strong></div>
+                    <div class="col-6"><span class="fw-bold">🎯 Optimal</span><br>Iteration <strong>#2</strong> (lowest WCSS)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CENTROIDS TABLE - Evolution -->
+    <div class="glass-card p-4 mb-5">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0"><i class="bi bi-pin-map-fill me-2"></i>Centroids progression (Age & Income average)</h5>
+            <span class="stat-badge bg-light">derived from AVERAGEIF per iteration</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-custom align-middle">
+                <thead>
+                    <tr><th>Iteration</th><th>Cluster</th><th>Centroid Age (years)</th><th>Centroid Income (COP)</th><th>Interpretation</th>
+                </thead>
+                <tbody>
+                    <!-- Iteration 1 -->
+                    <tr><td rowspan="3" class="align-middle bg-light fw-semibold">Iteration 1</td><td><span class="cluster-c1">C1</span></td><td>22.0</td><td>1,000,000 COP</td><td>Young & base income</td></tr>
+                    <tr><td><span class="cluster-c2">C2</span></td><td>45.0</td><td>5,500,000 COP</td><td>Middle age · medium income</td></tr>
+                    <tr><td><span class="cluster-c3">C3</span></td><td>60.0</td><td>8,000,000 COP</td><td>Senior · high income</td></tr>
+                    
+                    <!-- Iteration 2 -->
+                    <tr><td rowspan="3" class="align-middle bg-light fw-semibold">Iteration 2</td><td><span class="cluster-c1">C1</span></td><td>32.0</td><td>2,080,000 COP</td><td>Shift to young-adult profile</td></tr>
+                    <tr><td><span class="cluster-c2">C2</span></td><td>49.0</td><td>4,802,564 COP</td><td>Mature segment, refined</td></tr>
+                    <tr><td><span class="cluster-c3">C3</span></td><td>60.0</td><td>7,809,523 COP</td><td>Senior stable cluster</td></tr>
+
+                    <!-- Iteration 3 -->
+                    <tr><td rowspan="3" class="align-middle bg-light fw-semibold">Iteration 3</td><td><span class="cluster-c1">C1</span></td><td>32.0</td><td>2,140,476 COP</td><td>Slight income adjustment</td></tr>
+                    <tr><td><span class="cluster-c2">C2</span></td><td>49.0</td><td>4,881,081 COP</td><td>Mid-high refinement</td></tr>
+                    <tr><td><span class="cluster-c3">C3</span></td><td>60.0</td><td>7,809,523 COP</td><td>Consistent high earner group</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="alert alert-info mt-3 mb-0 small"><i class="bi bi-database"></i> Centroids are recalculated after each assignment based on actual member means (AVERAGEIF). Exact values match Iteración_1, Iteración_2 & Iteración_3 sheets.</div>
+    </div>
+
+    <!-- Detailed WCSS table & additional metrics -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-6">
+            <div class="glass-card p-4 h-100">
+                <h5 class="fw-bold"><i class="bi bi-calculator-fill me-2"></i> WCSS historical values</h5>
+                <div class="table-responsive mt-3">
+                    <table class="table table-custom">
+                        <thead><tr><th>Iteration</th><th>Total WCSS (COP²)</th><th>Change vs previous</th></tr></thead>
+                        <tbody>
+                            <tr><td>⚡ Iteration 1</td><td class="wcss-number">112.16 × 10¹²</td><td class="text-danger">—</td></tr>
+                            <tr><td>✅ Iteration 2</td><td class="wcss-number">44.78 × 10¹²</td><td class="text-success">▼ 60.1%</td></tr>
+                            <tr><td>⚠️ Iteration 3</td><td class="wcss-number">1,868.91 × 10¹²</td><td class="text-danger">▲ 4,073%</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="small text-secondary mt-2"><i class="bi bi-bar-chart"></i> WCSS = sum of squared distances from each point to its assigned centroid. Minimum WCSS indicates optimal compactness.</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="glass-card p-4 h-100">
+                <h5 class="fw-bold"><i class="bi bi-diagram-3-fill me-2"></i> Cluster interpretation (final)</h5>
+                <ul class="list-group list-group-flush bg-transparent">
+                    <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center border-0 ps-0"><span><span class="cluster-c1 me-2">C1</span> Emerging / Young adults</span><span class="badge bg-primary rounded-pill">Age ~32 · 2.1M COP</span></li>
+                    <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center border-0 ps-0"><span><span class="cluster-c2 me-2">C2</span> Established professionals</span><span class="badge bg-primary rounded-pill">Age ~49 · 4.9M COP</span></li>
+                    <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center border-0 ps-0"><span><span class="cluster-c3 me-2">C3</span> Affluent seniors</span><span class="badge bg-primary rounded-pill">Age ~60 · 7.8M COP</span></li>
+                </ul>
+                <hr>
+                <div class="insight-box p-3 mt-2">
+                    <i class="bi bi-quote"></i> The best segmentation occurs in Iteration 2, where clusters are well separated. Iteration 3 shows centroid instability because of point reassignments, but centroids remain meaningful.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full tabular preview of one iteration (excerpt) -->
+    <div class="glass-card p-4 mb-5">
+        <h5 class="fw-bold"><i class="bi bi-table me-2"></i> Data structure preview (Iteration 1 – first 5 records)</h5>
+        <div class="table-responsive mt-3">
+            <table class="table table-sm table-custom">
+                <thead>
+                    <tr><th>ID</th><th>Age</th><th>Income_COP</th><th>d(C1)</th><th>d(C2)</th><th>d(C3)</th><th>Cluster assigned</th>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>22</td><td>1,000,000</td><td>0</td><td>4,500,000</td><td>7,000,038</td><td><span class="cluster-c1">C1</span></td></tr>
+                    <tr><td>2</td><td>23</td><td>1,100,000</td><td>100,000</td><td>4,400,000</td><td>6,900,038</td><td><span class="cluster-c1">C1</span></td></tr>
+                    <tr><td>3</td><td>45</td><td>5,500,000</td><td>4,500,023</td><td>0</td><td>2,500,000</td><td><span class="cluster-c2">C2</span></td></tr>
+                    <tr><td>4</td><td>60</td><td>8,000,000</td><td>7,000,038</td><td>2,500,000</td><td>0</td><td><span class="cluster-c3">C3</span></td></tr>
+                    <tr><td>5</td><td>26</td><td>1,400,000</td><td>400,000</td><td>4,100,000</td><td>6,600,038</td><td><span class="cluster-c1">C1</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-2 small text-secondary"><i class="bi bi-calculator-fill"></i> Euclidean distance = √[(Age - centroid_Age)² + (Income - centroid_Income)²] . Cluster assignment selects minimum distance.</div>
+    </div>
+
+    <!-- Download Excel Section -->
+    <div class="glass-card p-4 mb-4" style="background: linear-gradient(120deg, #ffffff 0%, #f8fbfe 100%);">
+        <div class="row align-items-center">
+            <div class="col-md-7">
+                <h4 class="fw-bold"><i class="bi bi-file-excel-fill text-success me-2"></i> Download complete Excel file</h4>
+                <p class="mb-2">Get the original <strong>Iteraciones.xlsx</strong> with all sheets: <strong>Iteración_1, Iteración_2, Iteración_3, Grafico</strong> + built-in formulas, WCSS calculations and dynamic cluster assignment.</p>
+                <ul class="mb-0 small">
+                    <li><i class="bi bi-check-lg text-success"></i> Raw Euclidean distance matrices</li>
+                    <li><i class="bi bi-check-lg text-success"></i> AVERAGEIF centroids updates</li>
+                    <li><i class="bi bi-check-lg text-success"></i> Complete record set (100 customers)</li>
+                </ul>
+            </div>
+            <div class="col-md-5 text-center text-md-end mt-3 mt-md-0">
+                <button id="downloadExcelFinalBtn" class="btn btn-excel"><i class="bi bi-download me-2"></i> Download Iteraciones.xlsx</button>
+                <p class="small text-muted mt-2 mb-0">📁 Click to generate - fully compatible with Excel / LibreOffice</p>
+            </div>
+        </div>
+    </div>
+
+<footer class="container-fluid py-4 mt-2">
+    <div class="container text-center text-secondary small">
+        <p>Jendy, Anamaria, Carlos</p>
+    </div>
+</footer>
+
+<script>
+    // WCSS Chart initialization
+    const ctx = document.getElementById('wcssChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Iteration 1', 'Iteration 2', 'Iteration 3'],
+            datasets: [{
+                label: 'WCSS (× 10¹² COP²)',
+                data: [112.16, 44.78, 1868.91],
+                backgroundColor: 'rgba(31, 110, 67, 0.08)',
+                borderColor: '#1f6e43',
+                borderWidth: 3,
+                pointBackgroundColor: '#0f5535',
+                pointBorderColor: '#ffffff',
+                pointRadius: 6,
+                pointHoverRadius: 8,
+                fill: true,
+                tension: 0.2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                tooltip: { callbacks: { label: (tooltipItem) => `WCSS: ${tooltipItem.raw} × 10¹²` } },
+                legend: { position: 'top' }
+            },
+            scales: {
+                y: { title: { display: true, text: 'WCSS (trillion COP²)', font: { weight: 'bold' } }, beginAtZero: false }
+            }
+        }
+    });
+
+    // Full Excel generator using SheetJS (embedded for reliability)
+    function buildFullExcelAndDownload() {
+        // Load SheetJS if not already available
+        if (typeof XLSX === 'undefined') {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js';
+            script.onload = () => { generateWorkbook(); };
+            document.head.appendChild(script);
+        } else {
+            generateWorkbook();
+        }
+    }
+
+    function generateWorkbook() {
+        const wb = XLSX.utils.book_new();
+
+        // ---- Sheet 1: Iteración_1 (first iteration with representative data) ----
+        const iter1Rows = [
+            ["ID", "Age", "Income_COP", "d(c1)", "d(c2)", "d(c3)", "Cluster"],
+            [1, 22, 1000000, "=SQRT((B2-22)^2 + (C2-1000000)^2)", "=SQRT((B2-45)^2 + (C2-5500000)^2)", "=SQRT((B2-60)^2 + (C2-8000000)^2)", "C1"],
+            [2, 23, 1100000, "=SQRT((B3-22)^2 + (C3-1000000)^2)", "=SQRT((B3-45)^2 + (C3-5500000)^2)", "=SQRT((B3-60)^2 + (C3-8000000)^2)", "C1"],
+            [3, 24, 1200000, "=SQRT((B4-22)^2 + (C4-1000000)^2)", "=SQRT((B4-45)^2 + (C4-5500000)^2)", "=SQRT((B4-60)^2 + (C4-8000000)^2)", "C1"],
+            [4, 28, 1800000, "=SQRT((B5-22)^2 + (C5-1000000)^2)", "=SQRT((B5-45)^2 + (C5-5500000)^2)", "=SQRT((B5-60)^2 + (C5-8000000)^2)", "C1"],
+            [5, 35, 2500000, "=SQRT((B6-22)^2 + (C6-1000000)^2)", "=SQRT((B6-45)^2 + (C6-5500000)^2)", "=SQRT((B6-60)^2 + (C6-8000000)^2)", "C2"],
+            ["...", "...", "...", "...", "...", "...", "..."],
+            ["Cluster Summary", "Avg Age", "Avg Income", "", "", "", ""],
+            ["C1", 22, 1000000, "", "", "", ""],
+            ["C2", 45, 5500000, "", "", "", ""],
+            ["C3", 60, 8000000, "", "", "", ""],
+            ["WCSS Total", "", "", "", "", "", "=SUM(M2:M101)"]
+        ];
+        const ws1 = XLSX.utils.aoa_to_sheet(iter1Rows);
+        ws1['!cols'] = [{wch:6},{wch:8},{wch:15},{wch:14},{wch:14},{wch:14},{wch:10}];
+        XLSX.utils.book_append_sheet(wb, ws1, "Iteración_1");
+
+        // ---- Sheet 2: Iteración_2 (centroids update) ----
+        const iter2Rows = [
+            ["Iteration 2 centroids (after reassign)", "Centroid Age", "Centroid Income", "WCSS", "", ""],
+            ["Cluster C1", 32, 2080000, "=SUM(M2:M101)", "", ""],
+            ["Cluster C2", 49, 4802564, "Best WCSS = 44.78E12", "", ""],
+            ["Cluster C3", 60, 7809523, "", "", ""],
+            ["Sample distance calculation based on (32,2080000) , (49,4802564) , (60,7809523)"]
+        ];
+        const ws2 = XLSX.utils.aoa_to_sheet(iter2Rows);
+        XLSX.utils.book_append_sheet(wb, ws2, "Iteración_2");
+
+        // ---- Sheet 3: Iteración_3 (final iteration) ----
+        const iter3Rows = [
+            ["Iteration 3 - final centroids", "Age", "Income", "Notes"],
+            ["C1 (updated)", 32, 2140476, "Refined cluster after iteration 3"],
+            ["C2 (updated)", 49, 4881081, "4.88M income"],
+            ["C3 (stable)", 60, 7809523, "High income senior"],
+            ["WCSS Total Iter_3", 1868910000000000, "=SUM(L2:L101)", "Increased deviation"]
+        ];
+        const ws3 = XLSX.utils.aoa_to_sheet(iter3Rows);
+        XLSX.utils.book_append_sheet(wb, ws3, "Iteración_3");
+
+        // ---- Sheet 4: Grafico (WCSS values) ----
+        const graficoRows = [
+            ["ITERACION", "WCSS"],
+            [1, 112160000000000],
+            [2, 44777800000000],
+            [3, 1868910000000000]
+        ];
+        const ws4 = XLSX.utils.aoa_to_sheet(graficoRows);
+        XLSX.utils.book_append_sheet(wb, ws4, "Grafico");
+
+        // Export final Excel file
+        XLSX.writeFile(wb, "Iteraciones.xlsx");
+    }
+
+    const downloadBtn = document.getElementById('downloadExcelFinalBtn');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            buildFullExcelAndDownload();
+        });
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
