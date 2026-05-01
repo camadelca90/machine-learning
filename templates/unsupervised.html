@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Segmentation | Financial Clustering Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.plot.ly/plotly-3.0.1.min.js" charset="utf-8"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 15px;
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            border-left: 4px solid #764ba2;
+            padding-left: 15px;
+        }
+
+        .card h3 {
+            color: #764ba2;
+            margin: 15px 0 10px 0;
+            font-size: 1.2rem;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .stat-card .label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        /* Cluster Summary */
+        .cluster-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid;
+        }
+
+        .cluster-label {
+            font-weight: bold;
+        }
+
+        .cluster-count {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+            max-height: 400px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            position: sticky;
+            top: 0;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Centroids Table */
+        .centroids-table {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .centroids-table th {
+            background: #764ba2;
+        }
+
+        /* Color classes for clusters */
+        .cluster-0 {
+            border-left-color: #FF6B6B;
+        }
+
+        .cluster-1 {
+            border-left-color: #4ECDC4;
+        }
+
+        .cluster-2 {
+            border-left-color: #45B7D1;
+        }
+
+        .badge-cluster-0 {
+            background: #FF6B6B;
+        }
+
+        .badge-cluster-1 {
+            background: #4ECDC4;
+        }
+
+        .badge-cluster-2 {
+            background: #45B7D1;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            margin-top: 30px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'bar.html' %}
+    <div class="container">
+
+        <div class="header">
+            <h1><i class="fas fa-chart-line"></i> Customer Segmentation Dashboard</h1>
+            <p>K-Means Clustering Analysis for Financial Customer Behavior in Colombia</p>
+            <span class="badge"><i class="fas fa-database"></i> {{ total_records }} Records Analyzed</span>
+        </div>
+
+        <!-- Statistics Row -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="number">{{ total_records }}</div>
+                <div class="label">Total Customers</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">3</div>
+                <div class="label">Clusters Formed</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">K-Means</div>
+                <div class="label">Algorithm</div>
+            </div>
+        </div>
+
+        <div class="grid">
+
+            <div class="card">
+                <h2><i class="fas fa-info-circle"></i> Data Context</h2>
+                <p><strong>Dataset:</strong> Financial Customer Behavior in Colombia</p>
+                <p><strong>Description:</strong> This dataset contains information about 1,000 Colombian customers,
+                    including their demographic and financial profiles. The goal is to segment customers for
+                    personalized financial products like credit cards or savings plans.</p>
+                <h3>Features:</h3>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li><strong>Age:</strong> Customer's age in years</li>
+                    <li><strong>Income (COP):</strong> Monthly income in Colombian Pesos</li>
+                    <li><strong>Expenses (COP):</strong> Monthly expenses in Colombian Pesos</li>
+                </ul>
+                <h3>Preprocessing:</h3>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>StandardScaler normalization applied</li>
+                    <li>Features standardized to zero mean and unit variance</li>
+                    <li>No missing values detected</li>
+                </ul>
+            </div>
+
+            <!-- Cluster Summary -->
+            <div class="card">
+                <h2><i class="fas fa-chart-pie"></i> Cluster Summary</h2>
+                <div class="cluster-item cluster-0">
+                    <span class="cluster-label"><i class="fas fa-users"></i> Cluster 0</span>
+                    <span class="cluster-count">{{ summary.get(0, 0) }} customers</span>
+                </div>
+                <div class="cluster-item cluster-1">
+                    <span class="cluster-label"><i class="fas fa-users"></i> Cluster 1</span>
+                    <span class="cluster-count">{{ summary.get(1, 0) }} customers</span>
+                </div>
+                <div class="cluster-item cluster-2">
+                    <span class="cluster-label"><i class="fas fa-users"></i> Cluster 2</span>
+                    <span class="cluster-count">{{ summary.get(2, 0) }} customers</span>
+                </div>
+
+                <h3 style="margin-top: 20px;">Model Training</h3>
+                <p><strong>Algorithm:</strong> K-Means (Scikit-learn)</p>
+                <p><strong>Number of clusters:</strong> 3</p>
+                <p><strong>Random state:</strong> 42</p>
+                <p><strong>Initialization:</strong> k-means++ (default)</p>
+                <p><strong>Maximum iterations:</strong> 300 (default)</p>
+            </div>
+        </div>
+
+        <!--  Card -->
+        <div class="card" style="margin-bottom: 30px;">
+            <h2><i class="fas fa-chart-scatter"></i> Cluster Visualization</h2>
+            <div id="scatterPlot" style="height: 500px;"></div>
+            <p style="margin-top: 15px; color: #666; font-size: 0.9rem;">
+                <i class="fas fa-info-circle"></i> Scatter plot showing income vs expenses colored by cluster
+                assignment.
+                Centroids are marked with black diamonds (♦).
+            </p>
+        </div>
+
+        <!-- Centroids Card -->
+        <div class="card" style="margin-bottom: 30px;">
+            <h2><i class="fas fa-bullseye"></i> Cluster Centroids (Original Scale)</h2>
+            <div class="table-container">
+                <table class="centroids-table">
+                    <thead>
+                        <tr>
+                            <th>Cluster</th>
+                            <th>Age (years)</th>
+                            <th>Income (COP)</th>
+                            <th>Expenses (COP)</th>
+                            <th>Savings Potential (COP)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for centroid in centroids %}
+                        <tr>
+                            <td><span class="badge-cluster-{{ centroid.cluster }}"
+                                    style="padding: 5px 10px; border-radius: 12px;">Cluster {{ centroid.cluster
+                                    }}</span></td>
+                            <td>{{ "%.0f"|format(centroid.age) }}</td>
+                            <td>{{ "{:,.0f}".format(centroid.income_COP) }}</td>
+                            <td>{{ "{:,.0f}".format(centroid.expenses_COP) }}</td>
+                            <td>{{ "{:,.0f}".format(centroid.income_COP - centroid.expenses_COP) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="card">
+            <h2><i class="fas fa-table"></i> Sample Data (First 100 Records)</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Age</th>
+                            <th>Income (COP)</th>
+                            <th>Expenses (COP)</th>
+                            <th>Cluster</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in table_data %}
+                        <tr>
+                            <td>{{ row.name }}</td>
+                            <td>{{ row.age }}</td>
+                            <td>{{ "{:,.0f}".format(row.income_COP) }}</td>
+                            <td>{{ "{:,.0f}".format(row.expenses_COP) }}</td>
+                            <td><span class="badge-cluster-{{ row.cluster }}"
+                                    style="padding: 3px 10px; border-radius: 12px; font-size: 0.8rem;">{{ row.cluster
+                                    }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Interpretation -->
+        <div class="card" style="margin-top: 30px;">
+            <h2><i class="fas fa-chart-line"></i> Interpretation of Results</h2>
+
+            <h3>🎯 Cluster 0: High-Income Spenders</h3>
+            <p>These customers have high income and high expenses. They represent premium customers with significant
+                purchasing power. <strong>Recommended products:</strong> Premium credit cards with high limits,
+                investment accounts, and exclusive loyalty programs.</p>
+
+            <h3>💰 Cluster 1: Moderate Income, Balanced</h3>
+            <p>Middle-income customers with moderate expenses. They show balanced financial behavior with healthy
+                savings potential. <strong>Recommended products:</strong> Standard credit cards, savings plans, and
+                financial education products.</p>
+
+            <h3>🏦 Cluster 2: Lower Income, Conservative</h3>
+            <p>Lower income levels with proportional expenses. These customers are more conservative and may benefit
+                from basic financial products. <strong>Recommended products:</strong> Basic banking accounts,
+                micro-savings plans, and secured credit cards with low limits.</p>
+
+            <h3>📊 Business Insights</h3>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>The segmentation reveals clear spending patterns that can be targeted with personalized marketing
+                    campaigns.</li>
+                <li>Cluster 0 customers should be prioritized for premium product offerings and retention strategies.
+                </li>
+                <li>Cluster 1 represents the largest potential market for cross-selling opportunities.</li>
+                <li>Cluster 2 customers could benefit from financial literacy programs to increase their financial
+                    inclusion.</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p><i class="fas fa-chart-line"></i> Jendy, Anamaria, Carlos</p>
+        </div>
+    </div>
+
+    <script>
+        // Prepare data 
+        const scatterData = {{ scatter_data | tojson }};
+
+        // Group data by cluster
+        const clustersData = {
+            0: { x: [], y: [], name: 'Cluster 0 - High-Income Spenders', color: '#FF6B6B' },
+            1: { x: [], y: [], name: 'Cluster 1 - Moderate Balanced', color: '#4ECDC4' },
+            2: { x: [], y: [], name: 'Cluster 2 - Conservative', color: '#45B7D1' }
+        };
+
+        scatterData.forEach(point => {
+            const cluster = point.cluster;
+            if (clustersData[cluster]) {
+                clustersData[cluster].x.push(point.income_COP);
+                clustersData[cluster].y.push(point.expenses_COP);
+            }
+        });
+
+        // Centroids data
+        const centroids = {{ centroids | tojson }};
+        const centroidsX = centroids.map(c => c.income_COP);
+        const centroidsY = centroids.map(c => c.expenses_COP);
+
+        // Create traces for each cluster
+        const traces = [];
+
+        for (let i = 0; i < 3; i++) {
+            traces.push({
+                x: clustersData[i].x,
+                y: clustersData[i].y,
+                mode: 'markers',
+                name: clustersData[i].name,
+                marker: {
+                    color: clustersData[i].color,
+                    size: 8,
+                    opacity: 0.6
+                },
+                type: 'scatter'
+            });
+        }
+
+        traces.push({
+            x: centroidsX,
+            y: centroidsY,
+            mode: 'markers',
+            name: 'Centroids',
+            marker: {
+                color: 'black',
+                size: 15,
+                symbol: 'diamond',
+                line: {
+                    color: 'white',
+                    width: 2
+                }
+            },
+            type: 'scatter'
+        });
+
+        const layout = {
+            title: {
+                text: 'Customer Segmentation: Income vs Expenses',
+                font: { size: 18, family: 'Segoe UI' }
+            },
+            xaxis: {
+                title: 'Monthly Income (COP)',
+                tickformat: ',.0f',
+                tickprefix: '$'
+            },
+            yaxis: {
+                title: 'Monthly Expenses (COP)',
+                tickformat: ',.0f',
+                tickprefix: '$'
+            },
+            hovermode: 'closest',
+            plot_bgcolor: '#f8f9fa',
+            paper_bgcolor: 'white',
+            legend: {
+                x: 1.02,
+                y: 1,
+                bgcolor: 'rgba(255, 255, 255, 0.8)'
+            }
+        };
+
+        Plotly.newPlot('scatterPlot', traces, layout, { responsive: true });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

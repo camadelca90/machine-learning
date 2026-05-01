@@ -1,9 +1,47 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
+from clustering import ApplyClusteringkmeans
+import pandas as pd
+import numpy as np
 import house_price
 import classification_model
 import logistic_regression
 
+
 app = Flask(__name__)
+
+clustering_result = ApplyClusteringkmeans()
+df_clustered = pd.DataFrame(clustering_result["results"])
+
+@app.route('/unsupervised')
+def unsupervised():
+    table_data = clustering_result["results"][:100]
+
+    scatter_data = df_clustered[["income_COP", "expenses_COP", "cluster"]].to_dict(orient="records")
+    scaler = clustering_result["scaler"]
+    centers_scaled = np.array(clustering_result["centers_scaled"])
+    centers_original = scaler.inverse_transform(centers_scaled)
+    
+    centroids_data = []
+    for i, center in enumerate(centers_original):
+        centroids_data.append({
+            "cluster": int(i),
+            "age": float(center[0]),
+            "income_COP": float(center[1]),
+            "expenses_COP": float(center[2])
+        })
+    
+    return render_template('unsupervised.html',
+                         table_data=table_data,
+                         scatter_data=scatter_data,
+                         summary=clustering_result["SummaryClusters"],
+                         centroids=centroids_data,
+                         total_records=len(clustering_result["results"]))
+
+@app.route('/api/clusters')
+def get_clusters():
+    return jsonify(clustering_result["results"])
+
+
 
 @app.route('/')
 def home():
